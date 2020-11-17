@@ -4,10 +4,10 @@ import 'Palette.dart';
 
 ThemeData appTheme = ThemeData(
   // Define the default brightness and colors.
-  primaryColor: midBlue,
+  primaryColor: Palette.midBlue,
   // scaffoldBackgroundColor: Color(0XFFCCCCCC),
-  appBarTheme: AppBarTheme(color: midBlue),
-  accentColor: lightBlue,
+  appBarTheme: AppBarTheme(color: Palette.midBlue),
+  accentColor: Palette.lightBlue,
   // Define the default font family.
   fontFamily: 'SegoeUI',
   // Define the default TextTheme. Use this to specify the default

@@ -14,13 +14,13 @@ class CategoryCard extends StatelessWidget {
       onTap: () async {
         loading(context, 'looding');
         print(category.id);
-        List<Product> products =
-            await ProductsController.getProducts(1, category.id);
+        List<Product> products = await ProductsController.getProducts(
+            page: 1, categoryId: category.id);
         Navigator.of(context).pop();
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
           return ProductsScreen(
-            products: products,
+            // products: products,
             categoryId: category.id,
           );
         }));

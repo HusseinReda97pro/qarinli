@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 class CategoryController {
   static Future<List<Category>> getcategories() async {
     List<Category> categories = [];
+
     try {
       var categoriesData;
       try {

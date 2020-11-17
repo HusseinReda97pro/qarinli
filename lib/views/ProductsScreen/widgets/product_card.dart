@@ -106,8 +106,8 @@ class ProductCard extends StatelessWidget {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(product.shops[index].domain,
-                                  style:
-                                      TextStyle(fontSize: 12.0, color: black)),
+                                  style: TextStyle(
+                                      fontSize: 12.0, color: Palette.black)),
                             ],
                           )
                         ],

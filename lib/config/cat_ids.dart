@@ -1,0 +1,1 @@
+const LAPTOPS_CAT_ID = 783;

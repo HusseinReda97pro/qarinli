@@ -17,7 +17,7 @@ void loading(context, message) {
             child: Column(
               children: <Widget>[
                 SpinKitChasingDots(
-                  color: midBlue,
+                  color: Palette.midBlue,
                   size: 50.0,
                 ),
                 SizedBox(
@@ -26,7 +26,7 @@ void loading(context, message) {
                 Text(
                   message,
                   style: TextStyle(
-                      color: midBlue,
+                      color: Palette.midBlue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500),
                 )

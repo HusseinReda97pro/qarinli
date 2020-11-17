@@ -7,7 +7,10 @@ import 'package:http/http.dart' as http;
 import 'package:qarinli/models/shop.dart';
 
 class ProductsController {
-  static Future<List<Product>> getProducts(int page, int categoryId) async {
+  // Get Products
+  static Future<List<Product>> getProducts({int page, int categoryId}) async {
+    print(categoryId);
+
     List<Product> products = [];
     try {
       var productsData;
@@ -66,6 +69,7 @@ class ProductsController {
             shops: shops));
       }
     } catch (_) {}
+    print(products.length);
     return products;
   }
 }

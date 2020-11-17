@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qarinli/models/category.dart';
 import 'package:qarinli/views/categories/widgets/category_card.dart';
+import 'package:qarinli/views/widgets/appbar.dart';
 
 class CategoryScreen extends StatefulWidget {
   final List<Category> categories;
@@ -14,19 +15,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(children: [
-          Image.asset(
-            'assets/logo.png',
-            width: 65,
-            height: 40,
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 50),
-            child: Text('Qarinli Demo'),
-          ),
-        ]),
-      ),
+      appBar: MainAppBar(context: context),
       body: ListView.builder(
         itemCount: widget.categories.length,
         itemBuilder: (context, index) {

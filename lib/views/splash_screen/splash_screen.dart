@@ -1,9 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
-import 'package:qarinli/controllers/categories.dart';
-import 'package:qarinli/models/category.dart';
-import 'package:qarinli/views/categories/category_screen.dart';
-
+import 'package:qarinli/main.dart';
 // import '../main.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,20 +14,24 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    getP();
+    Timer(Duration(seconds: 5), () async {
+      MyApp.mainModel.loadProductsLanding();
+      Navigator.pushReplacementNamed(context, '/landing');
+    });
+    // getP();
   }
 
-  void getP() async {
-    List<Category> categories = await CategoryController.getcategories();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (BuildContext context) {
-        return CategoryScreen(
-          categories: categories,
-        );
-      }),
-    );
-  }
+  // void getP() async {
+  //   List<Category> categories = await CategoryController.getcategories();
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(builder: (BuildContext context) {
+  //       return CategoryScreen(
+  //         categories: categories,
+  //       );
+  //     }),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 stops: [0.2, 1.0],
-                colors: [midBlue, lightBlue],
+                colors: [Palette.midBlue, Palette.lightBlue],
               ),
             ),
           ),
