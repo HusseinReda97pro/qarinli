@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:qarinli/models/shop.dart';
 
 class ProductsController {
-  // Get Products
-  static Future<List<Product>> getProducts({int page, int categoryId}) async {
+  // Get Products with offers
+  static Future<List<Product>> getProducts(
+      {int page, int categoryId, bool withoutOffers = false}) async {
     print(categoryId);
 
     List<Product> products = [];
@@ -32,11 +33,16 @@ class ProductsController {
         String imageURL;
         List<Shop> shops = [];
         try {
-          imageURL = product['meta_data']
-              .toList()
-              .firstWhere((data) => data['key'] == '_cegg_data_Offer')['value']
-              .values
-              .toList()[0]['img'];
+          if (withoutOffers) {
+            imageURL = product['images'][0]['src'];
+          } else {
+            imageURL = product['meta_data']
+                .toList()
+                .firstWhere(
+                    (data) => data['key'] == '_cegg_data_Offer')['value']
+                .values
+                .toList()[0]['img'];
+          }
         } catch (e) {
           imageURL = null;
           // print(e);
@@ -47,20 +53,24 @@ class ProductsController {
               .firstWhere((data) => data['key'] == '_cegg_data_Offer');
           for (var shopData in shopsData['value'].values.toList()) {
             try {
-              shops.add(Shop(
-                  domain: shopData['domain'],
-                  price: shopData['price'].toString()));
+              shops.add(
+                Shop(
+                    domain: shopData['domain'],
+                    price: shopData['price'].toString(),
+                    offerLink: shopData['url']),
+              );
             } catch (e) {
-              print('ineer ' + e.toString());
-              print(shopData);
-              print('___________________________________');
+              // print('ineer ' + e.toString());
+              // print(shopData);
+              // print('___________________________________');
             }
           }
         } catch (e) {
           print('outter ' + e.toString());
         }
-        print(shops);
+        // print(shops);
         products.add(Product(
+            id: product['id'],
             name: product['name'],
             price: product['price'],
             imageUrl: imageURL,

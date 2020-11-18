@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qarinli/models/category.dart';
-import 'package:qarinli/models/product.dart';
+// import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/ProductsScreen/products_screen.dart';
 import 'package:qarinli/views/widgets/loading.dart';
-import 'package:qarinli/controllers/products.dart';
+// import 'package:qarinli/controllers/products.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category category;
@@ -14,8 +14,8 @@ class CategoryCard extends StatelessWidget {
       onTap: () async {
         loading(context, 'looding');
         print(category.id);
-        List<Product> products = await ProductsController.getProducts(
-            page: 1, categoryId: category.id);
+        // List<Product> products = await ProductsController.getProducts(
+        //     page: 1, categoryId: category.id);
         Navigator.of(context).pop();
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {

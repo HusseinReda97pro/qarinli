@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qarinli/config/cat_ids.dart';
+import 'package:qarinli/config/category_ids.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
-import 'package:qarinli/views/landing_screen/widgets/Product_card_landing_screen.dart';
 import 'package:qarinli/views/landing_screen/widgets/images_slider.dart';
-import 'package:qarinli/views/landing_screen/widgets/more.dart';
+import 'package:qarinli/views/landing_screen/widgets/products_slider.dart';
 import 'package:qarinli/views/landing_screen/widgets/section_image.dart';
 import 'package:qarinli/views/landing_screen/widgets/shop_card.dart';
-import 'package:qarinli/views/landing_screen/widgets/progress_indicator.dart';
 import 'package:qarinli/views/shops/shops.dart';
 import 'package:qarinli/views/widgets/appbar.dart';
 import 'package:qarinli/views/widgets/rowbuilder/rowbuilder.dart';
@@ -72,52 +70,63 @@ class _LanddingScreenState extends State<LanddingScreen> {
               onTap: () {},
               imageUrl: 'assets/main_categories/choosen.jpg',
             ),
-            //TODO chooen items
+            ProductsSlider(
+              isLoading: model.choosenLanddingIsLoading,
+              products: model.choosenLanddingProducts,
+              categoryId: CHOOSEN_CAT_ID,
+              withoutOffers: true,
+            ),
             SectionImage(
               onTap: () {},
               imageUrl: 'assets/main_categories/moda.jpg',
             ),
-            // TODO moda items
+            ProductsSlider(
+              isLoading: model.modaLanddingIsLoading,
+              products: model.modaLanddingProducts,
+              categoryId: MODA_CAT_ID,
+              withoutOffers: true,
+            ),
             //Laptops and computer
             SectionImage(
               onTap: () {},
               imageUrl: 'assets/main_categories/laptops.jpg',
             ),
-            model.laptopsLanddingIsLoading
-                ? ProgressIndicatorV2()
-                : Container(
-                    margin:
-                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: RowBuilder(
-                        itemCount: model.laptopsLanddingProducts.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ProductCard(
-                              product: model.laptopsLanddingProducts[index]);
-                        },
-                      ),
-                    ),
-                  ),
-            MoreButton(
+            ProductsSlider(
+              isLoading: model.laptopsLanddingIsLoading,
+              products: model.laptopsLanddingProducts,
               categoryId: LAPTOPS_CAT_ID,
+              withoutOffers: false,
             ),
-            //TODDO inaia ssha5ia
             SectionImage(
               onTap: () {},
               imageUrl: 'assets/main_categories/ania_sh5sia.jpg',
             ),
-            // TODO aiana sha5isa
+            ProductsSlider(
+              isLoading: model.ainiaSha5siaLanddingIsLoading,
+              products: model.ainiaSha5siaLanddingProducts,
+              categoryId: AINIA_SHA5SIA_CAT_ID,
+              withoutOffers: true,
+            ),
             SectionImage(
               onTap: () {},
               imageUrl: 'assets/main_categories/ator.jpg',
             ),
-            // TODO aiana ator
+            ProductsSlider(
+              isLoading: model.atorLanddingIsLoading,
+              products: model.atorLanddingProducts,
+              categoryId: ATOR_CAT_ID,
+              withoutOffers: true,
+            ),
             SectionImage(
               onTap: () {},
               imageUrl: 'assets/main_categories/mobs.jpg',
             ),
-            // TODO aiana mobs
+            ProductsSlider(
+              isLoading: model.mobsLanddingIsLoading,
+              products: model.mobsLanddingProducts,
+              categoryId: MOBS_CAT_ID,
+              withoutOffers: true,
+            ),
             SizedBox(
               height: 100.0,
             )

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         // ],
         // locale: Locale("ar"),
         // //
-        title: 'Qarinli ',
+        title: 'Qarinli',
         theme: appTheme,
         home: SplashScreen(),
         routes: {

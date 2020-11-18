@@ -6,6 +6,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      iconTheme: IconThemeData(
+        color: Colors.black,
+      ),
       backgroundColor: Colors.white,
       title: Center(
         child: Image.asset(

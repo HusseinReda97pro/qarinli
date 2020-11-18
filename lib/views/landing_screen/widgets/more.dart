@@ -7,7 +7,8 @@ import 'package:qarinli/views/widgets/loading.dart';
 
 class MoreButton extends StatelessWidget {
   final int categoryId;
-  MoreButton({this.categoryId});
+  final bool withoutOffers;
+  MoreButton({this.categoryId, this.withoutOffers});
   @override
   Widget build(BuildContext context) {
     return Consumer<MainModel>(
@@ -22,7 +23,9 @@ class MoreButton extends StatelessWidget {
                   loading(context, 'looding');
                   model.currentProducts.clear();
                   model.currentProducts = await ProductsController.getProducts(
-                      page: 2, categoryId: categoryId);
+                      page: 2,
+                      categoryId: categoryId,
+                      withoutOffers: withoutOffers);
                   Navigator.of(context).pop();
                   Navigator.push(
                     context,
@@ -30,6 +33,7 @@ class MoreButton extends StatelessWidget {
                       builder: (BuildContext context) {
                         return ProductsScreen(
                           categoryId: categoryId,
+                          withoutOffers: withoutOffers,
                         );
                       },
                     ),

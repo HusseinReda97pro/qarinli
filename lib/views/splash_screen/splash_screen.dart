@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
 import 'package:qarinli/main.dart';
-// import '../main.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () async {
+    Timer(Duration(seconds: 2), () async {
       MyApp.mainModel.loadProductsLanding();
       Navigator.pushReplacementNamed(context, '/landing');
     });

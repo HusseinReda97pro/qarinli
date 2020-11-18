@@ -4,12 +4,14 @@ import 'package:qarinli/config/Palette.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/ProductsScreen/widgets/product_card.dart';
+import 'package:qarinli/views/widgets/appbar.dart';
 import 'package:qarinli/views/widgets/loading.dart';
 import 'package:qarinli/controllers/products.dart';
 
 class ProductsScreen extends StatefulWidget {
   final int categoryId;
-  ProductsScreen({this.categoryId});
+  final bool withoutOffers;
+  ProductsScreen({this.categoryId, this.withoutOffers});
   @override
   _ProductsScreenState createState() => _ProductsScreenState();
 }
@@ -20,19 +22,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     return Consumer<MainModel>(builder: (context, model, chlild) {
       return Scaffold(
-        appBar: AppBar(
-          title: Row(children: [
-            Image.asset(
-              'assets/logo.png',
-              width: 65,
-              height: 40,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25),
-              child: Text('Qarinli Demo'),
-            ),
-          ]),
-        ),
+        appBar: MainAppBar(context: context),
         body: model.currentProducts.length > 0
             ? ListView.builder(
                 itemCount: model.currentProducts.length + 1,
@@ -63,7 +53,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   List<Product> products =
                                       await ProductsController.getProducts(
                                           page: pageNamber - 1,
-                                          categoryId: widget.categoryId);
+                                          categoryId: widget.categoryId,
+                                          withoutOffers: widget.withoutOffers);
                                   setState(() {
                                     model.currentProducts = products;
                                     pageNamber -= 1;
@@ -91,7 +82,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 List<Product> products =
                                     await ProductsController.getProducts(
                                         page: pageNamber + 1,
-                                        categoryId: widget.categoryId);
+                                        categoryId: widget.categoryId,
+                                        withoutOffers: widget.withoutOffers);
                                 setState(() {
                                   model.currentProducts = products;
                                   pageNamber += 1;

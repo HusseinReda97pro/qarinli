@@ -20,10 +20,12 @@ class ProductCard extends StatelessWidget {
             width: 70,
             height: 110,
             margin: EdgeInsets.all(10.0),
-            child: FadeInImage(
-              image: CachedNetworkImageProvider(product.imageUrl),
-              placeholder: AssetImage('assets/placeholder_image.png'),
-            ),
+            child: product.imageUrl != null
+                ? FadeInImage(
+                    image: CachedNetworkImageProvider(product.imageUrl),
+                    placeholder: AssetImage('assets/placeholder_image.png'),
+                  )
+                : Image.asset('assets/placeholder_image.png'),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
