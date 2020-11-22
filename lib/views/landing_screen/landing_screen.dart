@@ -7,6 +7,7 @@ import 'package:qarinli/views/landing_screen/widgets/products_slider.dart';
 import 'package:qarinli/views/landing_screen/widgets/section_image.dart';
 import 'package:qarinli/views/landing_screen/widgets/shop_card.dart';
 import 'package:qarinli/views/shops/shops.dart';
+import 'package:qarinli/views/widgets/app_drawer/app_drawer.dart';
 import 'package:qarinli/views/widgets/appbar.dart';
 import 'package:qarinli/views/widgets/rowbuilder/rowbuilder.dart';
 
@@ -20,6 +21,7 @@ class _LanddingScreenState extends State<LanddingScreen> {
   Widget build(BuildContext context) {
     return Consumer<MainModel>(builder: (context, model, chlild) {
       return Scaffold(
+        endDrawer: AppDrawer(),
         appBar: MainAppBar(
           context: context,
         ),
@@ -47,22 +49,27 @@ class _LanddingScreenState extends State<LanddingScreen> {
                 Container(
                   margin: EdgeInsets.all(10.0),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                          return ShopsScreen();
-                        }),
-                      );
-                    },
-                    child: Text(
-                      'المزيد',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 18.0,
-                          decoration: TextDecoration.underline),
-                    ),
-                  ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                            return ShopsScreen();
+                          }),
+                        );
+                      },
+                      child: Icon(
+                        Icons.more,
+                        size: 24,
+                        color: Theme.of(context).primaryColor,
+                      )
+                      //  Text(
+                      //   'المزيد',
+                      //   style: TextStyle(
+                      //       color: Theme.of(context).primaryColor,
+                      //       fontSize: 18.0,
+                      //       decoration: TextDecoration.underline),
+                      // ),
+                      ),
                 )
               ],
             ),

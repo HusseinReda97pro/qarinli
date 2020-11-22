@@ -34,9 +34,9 @@ class _ImagesSliderState extends State<ImagesSlider> {
               builder: (BuildContext context) {
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.symmetric(horizontal: 2, vertical: 10.0),
+                  // margin: EdgeInsets.symmetric(horizontal: 2, vertical: 10.0),
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: Theme.of(context).primaryColor,
                   ),
                   child: Image.asset(
                     imgUrl,
@@ -53,7 +53,7 @@ class _ImagesSliderState extends State<ImagesSlider> {
               // pauseAutoPlayOnTouch: ,
               // pauseAutoPlayOnTouch: Duration(seconds: 5),
               enlargeCenterPage: true,
-              viewportFraction: 0.9,
+              viewportFraction: 1,
               aspectRatio: 2.0,
               initialPage: 0,
               height: 120.0,

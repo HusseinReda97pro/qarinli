@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/controllers/products_controller.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/productScreen/product_screen.dart';
 import 'package:qarinli/views/widgets/columnbuilder/columnbuilder.dart';
+import 'package:qarinli/views/widgets/loading.dart';
+
+import '../../../main.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -11,11 +15,25 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        loading(context, 'loaading');
+        List<Product> relatedProducts = [];
+        try {
+          for (var id in product.relatedIds) {
+            var product = await MyApp.mainModel.productsController
+                .getProduct(productId: id.toString());
+            relatedProducts.add(product);
+          }
+        } catch (e) {
+          print('get product error');
+          print(e.toString());
+        }
+        Navigator.pop(context);
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
           return ProductScreen(
             product: product,
+            relatedProducts: relatedProducts,
           );
         }));
       },

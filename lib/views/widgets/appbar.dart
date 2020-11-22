@@ -7,8 +7,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       iconTheme: IconThemeData(
-        color: Colors.black,
-      ),
+          // color: Colors.black,
+          color: Theme.of(context).primaryColor),
       backgroundColor: Colors.white,
       title: Center(
         child: Image.asset(

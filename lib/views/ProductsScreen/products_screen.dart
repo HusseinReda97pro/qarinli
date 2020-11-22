@@ -6,7 +6,6 @@ import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/ProductsScreen/widgets/product_card.dart';
 import 'package:qarinli/views/widgets/appbar.dart';
 import 'package:qarinli/views/widgets/loading.dart';
-import 'package:qarinli/controllers/products.dart';
 
 class ProductsScreen extends StatefulWidget {
   final int categoryId;
@@ -21,6 +20,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<MainModel>(builder: (context, model, chlild) {
+      // print('test');
+      // print(model.currentProducts.length);
       return Scaffold(
         appBar: MainAppBar(context: context),
         body: model.currentProducts.length > 0
@@ -50,8 +51,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               onPressed: () async {
                                 if (pageNamber > 1) {
                                   loading(context, 'looding');
-                                  List<Product> products =
-                                      await ProductsController.getProducts(
+                                  List<Product> products = await model
+                                      .productsController
+                                      .getProducts(
                                           page: pageNamber - 1,
                                           categoryId: widget.categoryId,
                                           withoutOffers: widget.withoutOffers);
@@ -80,7 +82,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               onPressed: () async {
                                 loading(context, 'looding');
                                 List<Product> products =
-                                    await ProductsController.getProducts(
+                                    await model.productsController.getProducts(
                                         page: pageNamber + 1,
                                         categoryId: widget.categoryId,
                                         withoutOffers: widget.withoutOffers);

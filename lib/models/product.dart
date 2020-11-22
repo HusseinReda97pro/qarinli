@@ -1,4 +1,6 @@
+import 'package:qarinli/models/reviews.dart';
 import 'package:qarinli/models/shop.dart';
+import 'package:qarinli/models/youtube_video.dart';
 
 class Product {
   final int id;
@@ -9,6 +11,10 @@ class Product {
   final String shortDescription;
   final List<Shop> shops;
   final String bestPriceDomain;
+  final List<YoutubeVideo> youtubeVideos;
+  final List<String> images;
+  final Reviews reviews;
+  final List<dynamic> relatedIds;
 
   Product(
       {this.id,
@@ -18,5 +24,9 @@ class Product {
       this.description,
       this.shortDescription,
       this.shops,
-      this.bestPriceDomain});
+      this.bestPriceDomain,
+      this.youtubeVideos,
+      this.images,
+      this.reviews,
+      this.relatedIds});
 }
