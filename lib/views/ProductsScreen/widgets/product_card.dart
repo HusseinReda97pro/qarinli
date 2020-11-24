@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
-import 'package:qarinli/controllers/products_controller.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/productScreen/product_screen.dart';
 import 'package:qarinli/views/widgets/columnbuilder/columnbuilder.dart';

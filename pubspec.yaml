@@ -21,8 +21,10 @@ dependencies:
   url_launcher: ^5.7.10
   youtube_player_flutter: ^7.0.0+7
   flutter_rating_bar: ^3.2.0+1
-
+  flutter_skeleton: ^0.1.0+1
   cupertino_icons: ^1.0.0
+  # web_scraper: ^0.0.8
+  # html: ^0.14.0+4
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,8 @@ import 'package:qarinli/models/category.dart';
 // import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/ProductsScreen/products_screen.dart';
 import 'package:qarinli/views/widgets/loading.dart';
+
+import '../../../main.dart';
 // import 'package:qarinli/controllers/products.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -14,14 +16,16 @@ class CategoryCard extends StatelessWidget {
       onTap: () async {
         loading(context, 'looding');
         print(category.id);
-        // List<Product> products = await ProductsController.getProducts(
-        //     page: 1, categoryId: category.id);
+        MyApp.mainModel.currentProducts.clear();
+        MyApp.mainModel.currentProducts = await MyApp
+            .mainModel.productsController
+            .getProducts(page: 1, categoryId: category.id);
         Navigator.of(context).pop();
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
           return ProductsScreen(
-            // products: products,
             categoryId: category.id,
+            withoutOffers: false,
           );
         }));
       },

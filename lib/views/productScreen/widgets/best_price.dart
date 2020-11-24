@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/main.dart';
+import 'package:qarinli/models/product.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BestPrice extends StatelessWidget {
-  final String price;
-  BestPrice({@required this.price});
+  final Product product;
+  BestPrice({@required this.product});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,17 +23,17 @@ class BestPrice extends StatelessWidget {
                     'ر.س',
                     style: TextStyle(
                         color: Palette.green,
-                        fontSize: 30.0,
+                        fontSize: 24.0,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.all(4.0),
                   child: Text(
-                    price,
+                    product.price,
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 30.0,
+                        fontSize: 24.0,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -59,10 +62,16 @@ class BestPrice extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Text(
-                        'amazon.com أفضل عرض في',
-                        style: TextStyle(color: Colors.black, fontSize: 12.0),
-                      ) //TODO Edit shop
+                      product.shops.length > 0
+                          ? Text(
+                              MyApp.mainModel.productsController
+                                      .getCheapestPrice(product.shops)
+                                      .domain +
+                                  ' أفضل عرض في',
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 12.0),
+                            )
+                          : SizedBox.shrink()
                     ],
                   ),
                 ),
@@ -74,8 +83,13 @@ class BestPrice extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: RaisedButton(
               color: Theme.of(context).primaryColor,
-              onPressed: () {
-                //TODO open best price page
+              onPressed: () async {
+                String url = product.bestPriceURL;
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
               },
               child: Text(
                 'أشتري بأفضل سعر',
