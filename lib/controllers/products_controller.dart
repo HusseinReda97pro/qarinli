@@ -37,16 +37,29 @@ class ProductsController {
             metaData: metaData,
             images: product['images'],
             withoutOffers: withoutOffers);
+        if (imageURL == null) {
+          imageURL = getMainImage(
+              metaData: metaData,
+              images: product['images'],
+              withoutOffers: true);
+        }
         List<Shop> shops = getShopsOffers(metaData: metaData);
         List<YoutubeVideo> youtubeVideos = getYutubeVideos(metaData: metaData);
         List<String> images = getGoogleImages(metaData: metaData);
         Reviews reviews = getReviews(productData: product);
         // print(product['related_ids']);
         List<dynamic> relatedIds = product['related_ids'];
+        // dynamic historOfPricesHTML =
+        //     await getHistorOfPricesHTML(product['permalink']);
+        String bestPriceURL = product['external_url'];
+        if (bestPriceURL.isEmpty) {
+          bestPriceURL = getCheapestPrice(shops).offerLink;
+        }
 
         // print(shops);
         products.add(Product(
             id: product['id'],
+            link: product['permalink'],
             name: product['name'],
             price: product['price'],
             imageUrl: imageURL,
@@ -56,7 +69,10 @@ class ProductsController {
             youtubeVideos: youtubeVideos,
             images: images,
             reviews: reviews,
-            relatedIds: relatedIds));
+            relatedIds: relatedIds,
+            bestPriceURL: bestPriceURL
+            // historOfPricesHTML: historOfPricesHTML
+            ));
       }
     } catch (e) {
       print('Error');
@@ -87,21 +103,34 @@ class ProductsController {
         throw Exception('No Internet connection.');
       }
 
-      print(productData);
+      // print(productData);
 
       var metaData = productData['meta_data'];
       String imageURL = getMainImage(
           metaData: metaData,
           images: productData['images'],
           withoutOffers: withoutOffers);
+      if (imageURL == null) {
+        imageURL = getMainImage(
+            metaData: metaData,
+            images: productData['images'],
+            withoutOffers: true);
+      }
       List<Shop> shops = getShopsOffers(metaData: metaData);
       List<YoutubeVideo> youtubeVideos = getYutubeVideos(metaData: metaData);
       List<String> images = getGoogleImages(metaData: metaData);
       Reviews reviews = getReviews(productData: product);
       List<dynamic> relatedIds = productData['related_ids'];
+      // dynamic historOfPricesHTML =
+      //     await getHistorOfPricesHTML(productData['permalink']);
+      String bestPriceURL = productData['external_url'];
+      if (bestPriceURL.isEmpty) {
+        bestPriceURL = getCheapestPrice(shops).offerLink;
+      }
 
       product = Product(
           id: productData['id'],
+          link: productData['permalink'],
           name: productData['name'],
           price: productData['price'],
           imageUrl: imageURL,
@@ -111,7 +140,11 @@ class ProductsController {
           youtubeVideos: youtubeVideos,
           images: images,
           reviews: reviews,
-          relatedIds: relatedIds);
+          relatedIds: relatedIds,
+          bestPriceURL: bestPriceURL
+
+          // historOfPricesHTML: historOfPricesHTML
+          );
     } catch (_) {}
 
     return product;
@@ -210,5 +243,33 @@ class ProductsController {
     return reviews != null
         ? reviews
         : Reviews(averageRating: '0', ratingCount: 0);
+  }
+
+  // Future<dynamic> getHistorOfPricesHTML(String productLink) async {
+  //   dynamic historOfPricesHTML;
+  //   try {
+  //     http.Response response = await http.get(productLink);
+  //     var html = parse(response.body)
+  //         .querySelector('#section-woo-ce-pricehistory')
+  //         .outerHtml;
+  //     historOfPricesHTML = HtmlEditor.merageTwoTDs(html);
+  //   } catch (e) {
+  //     print('scrap error');
+  //     print(e);
+  //   }
+  //   return historOfPricesHTML;
+  // }
+
+  // get lowest product price
+  Shop getCheapestPrice(List<Shop> shops) {
+    double min = double.infinity;
+    int cheapestPriceIndex = 0;
+    for (int index = 0; index < shops.length; index++) {
+      if (double.parse(shops[index].price) < min) {
+        min = double.parse(shops[index].price);
+        cheapestPriceIndex = index;
+      }
+    }
+    return shops[cheapestPriceIndex];
   }
 }

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qarinli/controllers/category_controller.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
+import 'package:qarinli/models/category.dart';
+import 'package:qarinli/views/categories/category_screen.dart';
 import 'package:qarinli/views/widgets/app_drawer/widgets/drawer_tab.dart';
+
+import '../loading.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -24,13 +29,19 @@ class AppDrawer extends StatelessWidget {
                     : 4.0,
               ),
               DrawerTab(
-                title: 'الصفحة الرئيسية',
+                title: 'جميع الفئات',
                 icon: Icons.home,
-                onTap: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (BuildContext context) {
-                  //   return YoutubePlayerDemoApp();
-                  // }));
+                onTap: () async {
+                  loading(context, 'loading');
+                  List<Category> categories =
+                      await CategoryController.getcategories();
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return CategoryScreen(
+                      categories: categories,
+                    );
+                  }));
                 },
               )
             ],

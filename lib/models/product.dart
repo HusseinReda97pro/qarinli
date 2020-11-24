@@ -4,29 +4,34 @@ import 'package:qarinli/models/youtube_video.dart';
 
 class Product {
   final int id;
+  final String link;
   final String name;
   final String price;
   final String imageUrl;
   final String description;
   final String shortDescription;
   final List<Shop> shops;
-  final String bestPriceDomain;
+  final String bestPriceURL;
   final List<YoutubeVideo> youtubeVideos;
   final List<String> images;
   final Reviews reviews;
   final List<dynamic> relatedIds;
+  // final dynamic historOfPricesHTML;
 
-  Product(
-      {this.id,
-      this.name,
-      this.price,
-      this.imageUrl,
-      this.description,
-      this.shortDescription,
-      this.shops,
-      this.bestPriceDomain,
-      this.youtubeVideos,
-      this.images,
-      this.reviews,
-      this.relatedIds});
+  Product({
+    this.id,
+    this.link,
+    this.name,
+    this.price,
+    this.imageUrl,
+    this.description,
+    this.shortDescription,
+    this.shops,
+    this.bestPriceURL,
+    this.youtubeVideos,
+    this.images,
+    this.reviews,
+    this.relatedIds,
+    // this.historOfPricesHTML
+  });
 }
