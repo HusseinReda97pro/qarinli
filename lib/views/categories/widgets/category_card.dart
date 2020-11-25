@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:flutter/material.dart';
 import 'package:qarinli/models/category.dart';
 // import 'package:qarinli/models/product.dart';
@@ -59,65 +58,3 @@ class CategoryCard extends StatelessWidget {
     );
   }
 }
-=======
-import 'package:flutter/material.dart';
-import 'package:qarinli/models/category.dart';
-// import 'package:qarinli/models/product.dart';
-import 'package:qarinli/views/ProductsScreen/products_screen.dart';
-import 'package:qarinli/views/widgets/loading.dart';
-
-import '../../../main.dart';
-// import 'package:qarinli/controllers/products.dart';
-
-class CategoryCard extends StatelessWidget {
-  final Category category;
-  CategoryCard({this.category});
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        loading(context, 'looding');
-        print(category.id);
-        MyApp.mainModel.currentProducts.clear();
-        MyApp.mainModel.currentProducts = await MyApp
-            .mainModel.productsController
-            .getProducts(page: 1, categoryId: category.id);
-        Navigator.of(context).pop();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) {
-          return ProductsScreen(
-            categoryId: category.id,
-            withoutOffers: false,
-          );
-        }));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 6.0),
-        child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  category.name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  width: 12.0,
-                ),
-                category.imageUrl != null
-                    ? Image.network(
-                        category.imageUrl,
-                        width: 25,
-                        height: 25,
-                      )
-                    : Container()
-              ],
-            )),
-      ),
-    );
-  }
-}
->>>>>>> 1ed456bb93dbde9d2e4d18e7f5511a30428e382b
