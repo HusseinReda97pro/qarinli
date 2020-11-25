@@ -10,17 +10,35 @@ import 'package:qarinli/models/youtube_video.dart';
 
 class ProductsController {
   // Get Products with offers
-  Future<List<Product>> getProducts(
-      {int page, int categoryId, bool withoutOffers = false}) async {
+  Future<List<Product>> getProducts({
+    int page,
+    int categoryId,
+    bool withoutOffers = false,
+    choosen = false,
+    moda = false,
+  }) async {
     // print(categoryId);
 
     List<Product> products = [];
     try {
       var productsData;
       try {
-        final http.Response response = await http.get(
-            'https://www.qarinli.com/wp-json/wc/v3/products?page=$page&category=$categoryId',
-            headers: <String, String>{'authorization': basicAuth});
+        http.Response response;
+        if (choosen) {
+          response = await http.get(
+              'https://www.qarinli.com/wp-json/wc/v3/products?featured=true',
+              headers: <String, String>{'authorization': basicAuth});
+        } else {
+          if (moda) {
+            response = await http.get(
+                'https://www.qarinli.com/wp-json/wc/v3/products?category=$categoryId&featured=true',
+                headers: <String, String>{'authorization': basicAuth});
+          } else {
+            response = await http.get(
+                'https://www.qarinli.com/wp-json/wc/v3/products?page=$page&category=$categoryId',
+                headers: <String, String>{'authorization': basicAuth});
+          }
+        }
         var responseBody = await json.decode(response.body);
         if (responseBody is List<dynamic> || responseBody['message'] == null) {
           productsData = responseBody;
@@ -32,50 +50,54 @@ class ProductsController {
       }
 
       for (var product in productsData) {
-        var metaData = product['meta_data'];
-        String imageURL = getMainImage(
-            metaData: metaData,
-            images: product['images'],
-            withoutOffers: withoutOffers);
-        if (imageURL == null) {
-          imageURL = getMainImage(
+        try {
+          var metaData = product['meta_data'];
+          String imageURL = getMainImage(
               metaData: metaData,
               images: product['images'],
-              withoutOffers: true);
-        }
-        List<Shop> shops = getShopsOffers(metaData: metaData);
-        List<YoutubeVideo> youtubeVideos = getYutubeVideos(metaData: metaData);
-        List<String> images = getGoogleImages(metaData: metaData);
-        Reviews reviews = getReviews(productData: product);
-        // print(product['related_ids']);
-        List<dynamic> relatedIds = product['related_ids'];
-        // dynamic historOfPricesHTML =
-        //     await getHistorOfPricesHTML(product['permalink']);
-        String bestPriceURL = product['external_url'];
-        if (bestPriceURL.isEmpty) {
-          bestPriceURL = getCheapestPrice(shops).offerLink;
-        }
+              withoutOffers: withoutOffers);
+          if (imageURL == null) {
+            imageURL = getMainImage(
+                metaData: metaData,
+                images: product['images'],
+                withoutOffers: true);
+          }
+          List<Shop> shops = getShopsOffers(metaData: metaData);
+          List<YoutubeVideo> youtubeVideos =
+              getYutubeVideos(metaData: metaData);
+          List<String> images = getGoogleImages(metaData: metaData);
+          Reviews reviews = getReviews(productData: product);
+          // print(product['related_ids']);
+          List<dynamic> relatedIds = product['related_ids'];
+          // dynamic historOfPricesHTML =
+          //     await getHistorOfPricesHTML(product['permalink']);
+          String bestPriceURL = product['external_url'];
+          if (bestPriceURL.isEmpty) {
+            bestPriceURL = getCheapestPrice(shops).offerLink;
+          }
 
-        // print(shops);
-        products.add(Product(
-            id: product['id'],
-            link: product['permalink'],
-            name: product['name'],
-            price: product['price'],
-            imageUrl: imageURL,
-            description: product['description'],
-            shortDescription: product['short_description'],
-            shops: shops,
-            youtubeVideos: youtubeVideos,
-            images: images,
-            reviews: reviews,
-            relatedIds: relatedIds,
-            bestPriceURL: bestPriceURL
-            // historOfPricesHTML: historOfPricesHTML
-            ));
+          // print(shops);
+          products.add(Product(
+              id: product['id'],
+              link: product['permalink'],
+              name: product['name'],
+              price: product['price'],
+              imageUrl: imageURL,
+              description: product['description'],
+              shortDescription: product['short_description'],
+              shops: shops,
+              youtubeVideos: youtubeVideos,
+              images: images,
+              reviews: reviews,
+              relatedIds: relatedIds,
+              bestPriceURL: bestPriceURL
+              // historOfPricesHTML: historOfPricesHTML
+              ));
+        } catch (_) {}
       }
     } catch (e) {
-      print('Error');
+      print(
+          '________________________________________________   Error  _______________________');
       print(e.toString());
     }
 
@@ -206,7 +228,7 @@ class ProductsController {
         } catch (e) {}
       }
     } catch (e) {
-      print('outter ' + e.toString());
+      print('outter 1 : ' + e.toString());
     }
     return youtubeVideos;
   }
@@ -224,7 +246,7 @@ class ProductsController {
         } catch (e) {}
       }
     } catch (e) {
-      print('outter ' + e.toString());
+      print('outter  2 :' + e.toString());
     }
     return images;
   }
@@ -237,7 +259,7 @@ class ProductsController {
           averageRating: productData['average_rating'],
           ratingCount: productData['rating_count']);
     } catch (e) {
-      print('outter ' + e.toString());
+      print('outter  3' + e.toString());
       reviews = Reviews(averageRating: '0', ratingCount: 0);
     }
     return reviews != null
@@ -264,12 +286,17 @@ class ProductsController {
   Shop getCheapestPrice(List<Shop> shops) {
     double min = double.infinity;
     int cheapestPriceIndex = 0;
-    for (int index = 0; index < shops.length; index++) {
-      if (double.parse(shops[index].price) < min) {
-        min = double.parse(shops[index].price);
-        cheapestPriceIndex = index;
+    try {
+      for (int index = 0; index < shops.length; index++) {
+        if (double.parse(shops[index].price) < min) {
+          min = double.parse(shops[index].price);
+          cheapestPriceIndex = index;
+        }
       }
+    } catch (e) {
+      print('get Cheapest Price Error:');
+      print(e);
     }
-    return shops[cheapestPriceIndex];
+    return shops.length > 0 ? shops[cheapestPriceIndex] : null;
   }
 }

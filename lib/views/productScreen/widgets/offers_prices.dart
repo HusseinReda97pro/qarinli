@@ -80,13 +80,19 @@ class OffersPrices extends StatelessWidget {
             Expanded(
               child: Container(
                 margin: EdgeInsets.all(5.0),
-                height: 60,
-                width: 60,
+                height: 75,
+                width: 75,
                 child: shops[index].domain != null
                     ? FadeInImage(
-                        image: CachedNetworkImageProvider('https://www.' +
-                            shops[index].domain +
-                            '/favicon.ico'),
+                        // width: 60,
+                        // height: 60,
+                        image: CachedNetworkImageProvider(
+                          'https://www.qarinli.com/wp-content/uploads/ce-logos/icon_' +
+                              shops[index]
+                                  .domain
+                                  .replaceAll(new RegExp(r'\.'), '-') +
+                              '.png',
+                        ),
                         placeholder: AssetImage('assets/placeholder_image.png'),
                       )
                     : Image.asset('assets/placeholder_image.png'),

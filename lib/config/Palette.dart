@@ -7,4 +7,5 @@ class Palette {
   static const black = Color(0xFF505050);
   static const green = Color(0xFF095225);
   static const yellow = Color(0xFFF7C705);
+  static const lightGrey = Color(0xFFFE5E5E5);
 }

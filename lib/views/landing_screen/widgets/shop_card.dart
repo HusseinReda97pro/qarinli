@@ -7,12 +7,15 @@ class ShopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3.0,
+      elevation: 4.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14.0),
       ),
-      child:
-          Container(margin: EdgeInsets.all(10.0), child: Image.asset(imageURL)),
+      child: Container(
+          width: 70,
+          height: 70,
+          margin: EdgeInsets.all(10.0),
+          child: Image.asset(imageURL)),
     );
   }
 }

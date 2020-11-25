@@ -25,6 +25,8 @@ dependencies:
   cupertino_icons: ^1.0.0
   # web_scraper: ^0.0.8
   # html: ^0.14.0+4
+  # device_preview: ^0.5.5
+  shared_preferences: ^0.5.12+4
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +49,7 @@ flutter:
     - assets/images_slider/
     - assets/main_categories/
     - assets/shops/
+    - assets/splash_screens/
 
 module:
   androidX: true

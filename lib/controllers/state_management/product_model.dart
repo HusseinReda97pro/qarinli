@@ -38,9 +38,7 @@ mixin ProductModel on ChangeNotifier {
     choosenLanddingIsLoading = true;
     notifyListeners();
     choosenLanddingProducts = await productsController.getProducts(
-        page: 1, categoryId: CHOOSEN_CAT_ID, withoutOffers: true);
-    // print('choossen');
-    // print(choosenLanddingProducts[0].imageUrl);
+        page: 1, withoutOffers: true, choosen: true);
     choosenLanddingIsLoading = false;
     notifyListeners();
   }
@@ -49,7 +47,7 @@ mixin ProductModel on ChangeNotifier {
     modaLanddingIsLoading = true;
     notifyListeners();
     modaLanddingProducts = await productsController.getProducts(
-        page: 1, categoryId: MODA_CAT_ID, withoutOffers: true);
+        page: 1, categoryId: MODA_CAT_ID, withoutOffers: true, moda: true);
     modaLanddingIsLoading = false;
     notifyListeners();
   }
@@ -76,7 +74,7 @@ mixin ProductModel on ChangeNotifier {
     atorLanddingIsLoading = true;
     notifyListeners();
     atorLanddingProducts = await productsController.getProducts(
-        page: 1, categoryId: ATOR_CAT_ID, withoutOffers: true);
+        page: 1, categoryId: 794, withoutOffers: true);
     atorLanddingIsLoading = false;
     notifyListeners();
   }
@@ -92,4 +90,27 @@ mixin ProductModel on ChangeNotifier {
 
   // for products screen
   List<Product> currentProducts = [];
+
+  // for product screen
+  List<Product> relatedProducts = [];
+  bool relatedProductsIsLoading = false;
+  void getRelatedProducts(relatedIds) async {
+    print('enter getrelateds');
+    relatedProductsIsLoading = true;
+    notifyListeners();
+    relatedProducts.clear();
+    try {
+      for (var id in relatedIds) {
+        var product =
+            await productsController.getProduct(productId: id.toString());
+        relatedProducts.add(product);
+      }
+    } catch (e) {
+      print('get product error');
+      print(e.toString());
+    }
+    relatedProductsIsLoading = false;
+    notifyListeners();
+    print('exit getrelateds');
+  }
 }

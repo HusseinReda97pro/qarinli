@@ -1,3 +1,4 @@
+// import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qarinli/config/theme.dart';
@@ -6,11 +7,17 @@ import 'package:qarinli/views/landing_screen/landing_screen.dart';
 import 'package:qarinli/views/splash_screen/splash_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+      // DevicePreview(
+      // enabled: !kReleaseMode,
+      // builder: (context) => MyApp(), // Wrap your app
+      // ),
+      MyApp());
 }
 
 class MyApp extends StatelessWidget {
   static final MainModel mainModel = MainModel();
+  
 
   @override
   Widget build(BuildContext context) {

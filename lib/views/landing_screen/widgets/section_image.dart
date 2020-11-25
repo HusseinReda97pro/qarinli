@@ -10,7 +10,7 @@ class SectionImage extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 100,
+        height: MediaQuery.of(context).size.width > 600 ? 300 : 100,
         child: Image.asset(imageUrl),
       ),
     );

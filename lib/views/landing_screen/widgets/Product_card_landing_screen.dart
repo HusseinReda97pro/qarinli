@@ -16,30 +16,22 @@ class ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         loading(context, 'loaading');
-        List<Product> relatedProducts = [];
-        try {
-          for (var id in product.relatedIds) {
-            var product = await MyApp.mainModel.productsController
-                .getProduct(productId: id.toString());
-            relatedProducts.add(product);
-          }
-        } catch (e) {
-          print('get product error');
-          print(e.toString());
-        }
+
+        MyApp.mainModel.getRelatedProducts(product.relatedIds);
+
         Navigator.pop(context);
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
           return ProductScreen(
             product: product,
-            relatedProducts: relatedProducts,
           );
         }));
       },
       child: Card(
-        elevation: 3.0,
+        elevation: 4.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.0),
+          side: BorderSide(color: Palette.midBlue, width: 1),
         ),
         child: Column(
           children: [
