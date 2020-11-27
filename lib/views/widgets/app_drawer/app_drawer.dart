@@ -29,8 +29,13 @@ class AppDrawer extends StatelessWidget {
                     : 4.0,
               ),
               DrawerTab(
-                title: 'جميع الفئات',
+                title: 'الصفحة الرئيسية',
                 icon: Icons.home,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'جميع الفئات',
+                icon: Icons.list_alt,
                 onTap: () async {
                   loading(context, 'loading');
                   List<Category> categories =
@@ -43,7 +48,57 @@ class AppDrawer extends StatelessWidget {
                     );
                   }));
                 },
-              )
+              ),
+              DrawerTab(
+                title: 'الدخول',
+                icon: Icons.person,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'المفضلة',
+                icon: Icons.favorite,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'الأعلى مبيعا',
+                icon: Icons.arrow_circle_up,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'المدونة',
+                icon: Icons.book,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'المتاجر',
+                icon: Icons.shop_two,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'عروض السوبر ماركت',
+                icon: Icons.local_offer_outlined,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'عروض الموضة',
+                icon: Icons.local_offer,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'انشاءمتجر',
+                icon: Icons.add_shopping_cart,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'سياسة الخصوصية',
+                icon: Icons.policy,
+                onTap: () {},
+              ),
+              DrawerTab(
+                title: 'الشروط والأحكام',
+                icon: Icons.report,
+                onTap: () {},
+              ),
             ],
           ),
         ),

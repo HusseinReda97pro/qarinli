@@ -62,7 +62,9 @@ class _SplashScreenFirstTimeOnlyState extends State<SplashScreenFirstTimeOnly> {
                       image,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
-                      fit: BoxFit.cover,
+                      fit: MediaQuery.of(context).size.width > 600
+                          ? BoxFit.fill
+                          : BoxFit.cover,
                     ),
                   );
                 },

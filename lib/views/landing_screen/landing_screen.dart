@@ -110,7 +110,7 @@ class _LanddingScreenState extends State<LanddingScreen> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: RowBuilder(
-                itemCount: 10,
+                itemCount: MediaQuery.of(context).size.width > 600 ? 15 : 10,
                 itemBuilder: (BuildContext context, int index) {
                   return ShopCard(
                     imageURL: 'assets/shops/' + (index + 1).toString() + '.jpg',
@@ -330,6 +330,7 @@ class _LanddingScreenState extends State<LanddingScreen> {
               ? ListSkeleton(
                   style: SkeletonStyle(
                     theme: SkeletonTheme.Light,
+                    backgroundColor: Palette.lightGrey,
                     isShowAvatar: false,
                     barCount: 3,
                     colors: [

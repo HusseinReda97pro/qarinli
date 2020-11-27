@@ -27,8 +27,10 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  final CarouselController buttonCarouselController = CarouselController();
+  final CarouselController buttonCarouselControllerVideo = CarouselController();
+  final CarouselController buttonCarouselControllerImage = CarouselController();
   int _currentVideo = 0;
+  int _currentImage = 0;
 
   Widget _buildCardTitle(String title) {
     return Card(
@@ -80,7 +82,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             ExpansionTile(
               initiallyExpanded: true,
-              backgroundColor: Colors.white,
+              backgroundColor: Palette.lightGrey,
               title: _buildCardTitle('الأسعار'),
               trailing: SizedBox(),
               children: [
@@ -92,7 +94,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             ExpansionTile(
               initiallyExpanded: true,
-              backgroundColor: Colors.white,
+              backgroundColor: Palette.lightGrey,
               title: _buildCardTitle('الوصف'),
               trailing: SizedBox(),
               children: [
@@ -106,7 +108,7 @@ class _ProductScreenState extends State<ProductScreen> {
             widget.product.images.length > 0
                 ? ExpansionTile(
                     initiallyExpanded: true,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Palette.lightGrey,
                     title: _buildCardTitle('صور'),
                     trailing: SizedBox(),
                     children: [
@@ -135,7 +137,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             },
                           );
                         }).toList(),
-                        carouselController: buttonCarouselController,
+                        carouselController: buttonCarouselControllerImage,
                         options: CarouselOptions(
                             autoPlay: false,
                             autoPlayAnimationDuration: Duration(seconds: 2),
@@ -148,7 +150,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             height: 400.0,
                             onPageChanged: (index, _) {
                               setState(() {
-                                _currentVideo = index;
+                                _currentImage = index;
                               });
                             }),
                       ),
@@ -163,7 +165,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 vertical: 10.0, horizontal: 2.0),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: _currentVideo == index
+                              color: _currentImage == index
                                   ? Palette.yellow
                                   : Palette.midBlue,
                             ),
@@ -176,7 +178,7 @@ class _ProductScreenState extends State<ProductScreen> {
             widget.product.youtubeVideos.length > 0
                 ? ExpansionTile(
                     initiallyExpanded: true,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Palette.lightGrey,
                     title: _buildCardTitle('فيدوهات'),
                     trailing: SizedBox(),
                     children: [
@@ -195,7 +197,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               },
                             );
                           }).toList(),
-                          carouselController: buttonCarouselController,
+                          carouselController: buttonCarouselControllerVideo,
                           options: CarouselOptions(
                               autoPlay: false,
                               autoPlayAnimationDuration: Duration(seconds: 2),
@@ -206,7 +208,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               aspectRatio: 2.0,
                               initialPage: 0,
                               height: MediaQuery.of(context).size.width > 600
-                                  ? 800
+                                  ? 850
                                   : 400.0,
                               onPageChanged: (index, _) {
                                 setState(() {
@@ -256,7 +258,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 : SizedBox.shrink(),
             ExpansionTile(
               initiallyExpanded: true,
-              backgroundColor: Colors.white,
+              backgroundColor: Palette.lightGrey,
               title: _buildCardTitle('تقيمات المستخدم'),
               trailing: SizedBox(),
               children: [
