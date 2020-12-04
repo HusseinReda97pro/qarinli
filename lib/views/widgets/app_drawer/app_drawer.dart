@@ -3,7 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:qarinli/controllers/category_controller.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/models/category.dart';
+import 'package:qarinli/views/blogs_screen/blogs_screen.dart';
 import 'package:qarinli/views/categories/category_screen.dart';
+import 'package:qarinli/views/info/privacy.dart';
+import 'package:qarinli/views/info/rules.dart';
+import 'package:qarinli/views/settings/settings.dart';
 import 'package:qarinli/views/widgets/app_drawer/widgets/drawer_tab.dart';
 
 import '../loading.dart';
@@ -67,7 +71,15 @@ class AppDrawer extends StatelessWidget {
               DrawerTab(
                 title: 'المدونة',
                 icon: Icons.book,
-                onTap: () {},
+                onTap: () {
+                  loading(context, 'loading');
+                  model.getBlogs(page: 1);
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return BlogsScreen();
+                  }));
+                },
               ),
               DrawerTab(
                 title: 'المتاجر',
@@ -84,20 +96,48 @@ class AppDrawer extends StatelessWidget {
                 icon: Icons.local_offer,
                 onTap: () {},
               ),
-              DrawerTab(
-                title: 'انشاءمتجر',
-                icon: Icons.add_shopping_cart,
-                onTap: () {},
-              ),
+              // DrawerTab(
+              //   title: 'انشاءمتجر',
+              //   icon: Icons.add_shopping_cart,
+              //   onTap: () {},
+              // ),
               DrawerTab(
                 title: 'سياسة الخصوصية',
                 icon: Icons.policy,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return Privacy();
+                      },
+                    ),
+                  );
+                },
               ),
               DrawerTab(
                 title: 'الشروط والأحكام',
                 icon: Icons.report,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return Rules();
+                      },
+                    ),
+                  );
+                },
+              ),
+              DrawerTab(
+                title: 'الإعدادات',
+                icon: Icons.settings,
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return Settings();
+                  }));
+                },
               ),
             ],
           ),

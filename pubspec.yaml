@@ -3,7 +3,7 @@ description: A new Flutter application.
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -27,6 +27,11 @@ dependencies:
   # html: ^0.14.0+4
   # device_preview: ^0.5.5
   shared_preferences: ^0.5.12+4
+  flutter_phoenix: ^0.1.0
+  dynamic_theme: ^1.0.1
+  linked_scroll_controller: ^0.1.2
+  material_design_icons_flutter: ^4.0.5755
+  in_app_review: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -44,12 +49,19 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/logo.png
+    - assets/light_logo.png
+    - assets/dark_logo.png
     - assets/placeholder_image.png
     - assets/images_slider/
     - assets/main_categories/
+    - assets/top_categories/
     - assets/shops/
     - assets/splash_screens/
+    - assets/logo_spinner.png
+  fonts:
+    - family: Hacen
+      fonts:
+        - asset: assets/fonts/Hacen_Beirut_Lt_X3.ttf
 
 module:
   androidX: true

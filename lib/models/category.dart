@@ -1,10 +1,8 @@
 class Category {
   final int id;
-  final String name;
+  String name;
   final String imageUrl;
-  Category({
-    this.id,
-    this.name,
-    this.imageUrl,
-  });
+  List<Category> subCategories;
+  int count;
+  Category({this.id, this.name, this.imageUrl, this.subCategories, this.count});
 }

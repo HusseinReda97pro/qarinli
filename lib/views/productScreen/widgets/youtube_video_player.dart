@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/models/youtube_video.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -66,7 +67,9 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
                     textDirection: TextDirection.rtl,
                     style: TextStyle(
                       fontSize: 10.0,
-                      color: Palette.black,
+                      color: theme == AppTheme.LIGHT
+                          ? Palette.black
+                          : Colors.white,
                     ),
                   ),
                 )

@@ -43,7 +43,13 @@ class ProductsController {
         if (responseBody is List<dynamic> || responseBody['message'] == null) {
           productsData = responseBody;
         } else {
-          return responseBody['message'];
+          // return responseBody['message'];
+          print(page);
+          print(categoryId);
+          print(
+              '________________________________________________   Error  for products api _______________________');
+          print(responseBody['message']);
+          return [];
         }
       } on SocketException {
         throw Exception('No Internet connection.');
@@ -228,7 +234,7 @@ class ProductsController {
         } catch (e) {}
       }
     } catch (e) {
-      print('outter 1 : ' + e.toString());
+      // print('outter 1 : ' + e.toString());
     }
     return youtubeVideos;
   }
@@ -246,7 +252,7 @@ class ProductsController {
         } catch (e) {}
       }
     } catch (e) {
-      print('outter  2 :' + e.toString());
+      // print('outter  2 :' + e.toString());
     }
     return images;
   }
@@ -259,7 +265,7 @@ class ProductsController {
           averageRating: productData['average_rating'],
           ratingCount: productData['rating_count']);
     } catch (e) {
-      print('outter  3' + e.toString());
+      // print('outter  3' + e.toString());
       reviews = Reviews(averageRating: '0', ratingCount: 0);
     }
     return reviews != null

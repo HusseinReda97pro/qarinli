@@ -37,6 +37,7 @@ mixin ProductModel on ChangeNotifier {
   Future<void> loadChoosenLdnding() async {
     choosenLanddingIsLoading = true;
     notifyListeners();
+    choosenLanddingProducts.clear();
     choosenLanddingProducts = await productsController.getProducts(
         page: 1, withoutOffers: true, choosen: true);
     choosenLanddingIsLoading = false;
@@ -46,6 +47,7 @@ mixin ProductModel on ChangeNotifier {
   Future<void> loadModaLdnding() async {
     modaLanddingIsLoading = true;
     notifyListeners();
+    modaLanddingProducts.clear();
     modaLanddingProducts = await productsController.getProducts(
         page: 1, categoryId: MODA_CAT_ID, withoutOffers: true, moda: true);
     modaLanddingIsLoading = false;
@@ -55,6 +57,7 @@ mixin ProductModel on ChangeNotifier {
   Future<void> loadLaptopsLdnding() async {
     laptopsLanddingIsLoading = true;
     notifyListeners();
+    laptopsLanddingProducts.clear();
     laptopsLanddingProducts = await productsController.getProducts(
         page: 1, categoryId: LAPTOPS_CAT_ID);
     laptopsLanddingIsLoading = false;
@@ -64,6 +67,7 @@ mixin ProductModel on ChangeNotifier {
   Future<void> loadAiniaSha5siaLdnding() async {
     ainiaSha5siaLanddingIsLoading = true;
     notifyListeners();
+    ainiaSha5siaLanddingProducts.clear();
     ainiaSha5siaLanddingProducts = await productsController.getProducts(
         page: 1, categoryId: AINIA_SHA5SIA_CAT_ID, withoutOffers: true);
     ainiaSha5siaLanddingIsLoading = false;
@@ -73,6 +77,7 @@ mixin ProductModel on ChangeNotifier {
   Future<void> loadAtorLdnding() async {
     atorLanddingIsLoading = true;
     notifyListeners();
+    atorLanddingProducts.clear();
     atorLanddingProducts = await productsController.getProducts(
         page: 1, categoryId: 794, withoutOffers: true);
     atorLanddingIsLoading = false;
@@ -82,6 +87,7 @@ mixin ProductModel on ChangeNotifier {
   Future<void> loadMobsLdnding() async {
     mobsLanddingIsLoading = true;
     notifyListeners();
+    mobsLanddingProducts.clear();
     mobsLanddingProducts =
         await productsController.getProducts(page: 1, categoryId: MOBS_CAT_ID);
     mobsLanddingIsLoading = false;
@@ -90,12 +96,22 @@ mixin ProductModel on ChangeNotifier {
 
   // for products screen
   List<Product> currentProducts = [];
+  bool currentProductsIsLoadin = false;
+  Future<void> getCurrentProducts({int pageNamber, int categoryId}) async {
+    currentProductsIsLoadin = true;
+    notifyListeners();
+    currentProducts.clear();
+    currentProducts = await productsController.getProducts(
+        page: pageNamber, categoryId: categoryId);
+    currentProductsIsLoadin = false;
+    notifyListeners();
+  }
 
   // for product screen
   List<Product> relatedProducts = [];
   bool relatedProductsIsLoading = false;
   void getRelatedProducts(relatedIds) async {
-    print('enter getrelateds');
+    // print('enter getrelateds');
     relatedProductsIsLoading = true;
     notifyListeners();
     relatedProducts.clear();
@@ -106,11 +122,15 @@ mixin ProductModel on ChangeNotifier {
         relatedProducts.add(product);
       }
     } catch (e) {
-      print('get product error');
-      print(e.toString());
+      // print('get product error');
+      // print(e.toString());
     }
     relatedProductsIsLoading = false;
     notifyListeners();
-    print('exit getrelateds');
+    // print('exit get relateds');
+    // print('related length: ' + relatedProducts.length.toString());
   }
+
+  // for Favourites screen
+  List<Product> favoritesProducts = [];
 }

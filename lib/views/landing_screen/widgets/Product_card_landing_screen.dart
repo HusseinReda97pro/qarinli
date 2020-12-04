@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:qarinli/views/productScreen/product_screen.dart';
@@ -28,6 +29,7 @@ class ProductCard extends StatelessWidget {
         }));
       },
       child: Card(
+        color: Palette.lightGrey,
         elevation: 4.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.0),
@@ -53,7 +55,8 @@ class ProductCard extends StatelessWidget {
               child: Text(
                 product.name,
                 textDirection: TextDirection.rtl,
-                style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 14.0, color: Theme.of(context).primaryColor),
               ),
             ),
             Container(
@@ -62,9 +65,14 @@ class ProductCard extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    'SAR ' + product.price,
+                    double.parse(product.price).toStringAsFixed(2) + ' SAR',
                     style: TextStyle(
-                        color: Palette.green, fontWeight: FontWeight.w700),
+                        color: Theme.of(context).primaryColor
+                        // theme == AppTheme.LIGHT
+                        //     ? Colors.black
+                        //     : Palette.yellow
+                        ,
+                        fontSize: 18.0),
                   ),
                   Expanded(child: SizedBox())
                 ],

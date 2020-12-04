@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/config/theme.dart';
 
 void loading(context, message) {
   showDialog(
@@ -17,7 +18,8 @@ void loading(context, message) {
             child: Column(
               children: <Widget>[
                 SpinKitChasingDots(
-                  color: Palette.midBlue,
+                  color:
+                      theme == AppTheme.LIGHT ? Palette.midBlue : Colors.white,
                   size: 50.0,
                 ),
                 SizedBox(
@@ -26,7 +28,9 @@ void loading(context, message) {
                 Text(
                   message,
                   style: TextStyle(
-                      color: Palette.midBlue,
+                      color: theme == AppTheme.LIGHT
+                          ? Palette.midBlue
+                          : Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w500),
                 )

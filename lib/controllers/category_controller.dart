@@ -42,4 +42,34 @@ class CategoryController {
     } catch (_) {}
     return categories;
   }
+
+  Future<List<Category>> getsubCategories({parentId}) async {
+    List<Category> categories = [];
+
+    try {
+      var categoriesData;
+      try {
+        final http.Response response = await http.get(
+            'https://www.qarinli.com/wp-json/wc/v3/products/categories?parent=$parentId',
+            headers: <String, String>{'authorization': basicAuth});
+        var responseBody = await json.decode(response.body);
+        if (responseBody is List<dynamic> || responseBody['message'] == null) {
+          categoriesData = responseBody;
+        } else {
+          return responseBody['message'];
+        }
+      } on SocketException {
+        throw Exception('No Internet connection.');
+      }
+
+      for (var category in categoriesData) {
+        categories.add(Category(
+          id: category['id'],
+          name: category['name'],
+          count: category['count'],
+        ));
+      }
+    } catch (_) {}
+    return categories;
+  }
 }

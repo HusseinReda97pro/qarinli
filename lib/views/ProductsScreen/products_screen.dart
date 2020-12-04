@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/ProductsScreen/widgets/product_card.dart';
@@ -42,11 +43,15 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               ),
                               height: 25,
                               minWidth: 15,
-                              color: Palette.midBlue,
+                              color: theme == AppTheme.LIGHT
+                                  ? Palette.midBlue
+                                  : Colors.white,
                               child: Icon(
                                 Icons.arrow_left,
                                 size: 18,
-                                color: Colors.white,
+                                color: theme == AppTheme.LIGHT
+                                    ? Colors.white
+                                    : Palette.midBlue,
                               ),
                               onPressed: () async {
                                 if (pageNamber > 1) {
@@ -73,11 +78,15 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               ),
                               height: 25,
                               minWidth: 15,
-                              color: Palette.midBlue,
+                              color: theme == AppTheme.LIGHT
+                                  ? Palette.midBlue
+                                  : Colors.white,
                               child: Icon(
                                 Icons.arrow_right,
                                 size: 18,
-                                color: Colors.white,
+                                color: theme == AppTheme.LIGHT
+                                    ? Colors.white
+                                    : Palette.midBlue,
                               ),
                               onPressed: () async {
                                 loading(context, 'looding');

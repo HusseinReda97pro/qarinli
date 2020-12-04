@@ -10,26 +10,31 @@ class ProductsSlider extends StatelessWidget {
   final List<Product> products;
   final int categoryId;
   final bool withoutOffers;
+  final TextDirection textDirection;
 
   const ProductsSlider(
       {@required this.isLoading,
       @required this.products,
       this.categoryId,
-      this.withoutOffers});
+      this.withoutOffers,
+      this.textDirection = TextDirection.rtl});
 
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? ProgressIndicatorV2()
-        : SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.0),
-              child: RowBuilder(
-                itemCount: products.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ProductCard(product: products[index]);
-                },
+        : Directionality(
+            textDirection: textDirection,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                child: RowBuilder(
+                  itemCount: products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProductCard(product: products[index]);
+                  },
+                ),
               ),
             ),
           );

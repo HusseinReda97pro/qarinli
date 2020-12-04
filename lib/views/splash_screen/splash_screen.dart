@@ -19,6 +19,18 @@ class _SplashScreenState extends State<SplashScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       // await prefs.setBool('firstTime', value);
       bool firstTime = prefs.getBool('firstTime');
+      // String appTheme = prefs.getString('theme');
+      // if (appTheme == null) {
+      //   theme = AppTheme.DARK;
+      // } else {
+      //   if (appTheme == 'light') {
+      //     theme = AppTheme.LIGHT;
+      //   } else {
+      //     if (appTheme == 'dark') {
+      //       theme = AppTheme.DARK;
+      //     }
+      //   }
+      // }
       if (firstTime != null) {
         Navigator.pushReplacementNamed(context, '/landing');
       } else {

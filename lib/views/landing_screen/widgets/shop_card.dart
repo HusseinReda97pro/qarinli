@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qarinli/config/Palette.dart';
 
 class ShopCard extends StatelessWidget {
   final String imageURL;
@@ -10,6 +11,7 @@ class ShopCard extends StatelessWidget {
       elevation: 4.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14.0),
+        side: BorderSide(color: Palette.midBlue, width: 1),
       ),
       child: Container(
           width: 70,

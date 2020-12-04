@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/config/theme.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final context;
@@ -9,16 +9,19 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         iconTheme: IconThemeData(
             // color: Colors.black,
-            color: Theme.of(context).primaryColor),
-        backgroundColor: Palette.lightGrey,
+            color: theme == AppTheme.LIGHT
+                ? Theme.of(context).primaryColor
+                : Colors.white),
         elevation: 0,
         centerTitle: true,
         flexibleSpace: Container(
           margin: EdgeInsets.all(30),
           child: Image.asset(
-            'assets/logo.png',
-            width: MediaQuery.of(context).size.width > 600 ? 120 : 160,
-            height: MediaQuery.of(context).size.width > 600 ? 60 : 80,
+            theme == AppTheme.LIGHT
+                ? 'assets/light_logo.png'
+                : 'assets/dark_logo.png',
+            width: MediaQuery.of(context).size.width > 600 ? 240 : 160,
+            height: MediaQuery.of(context).size.width > 600 ? 120 : 80,
           ),
         ));
   }

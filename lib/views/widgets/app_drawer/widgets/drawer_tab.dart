@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/config/theme.dart';
 
 class DrawerTab extends StatelessWidget {
   final IconData icon;
@@ -16,7 +17,7 @@ class DrawerTab extends StatelessWidget {
           children: <Widget>[
             Icon(
               icon,
-              color: Palette.midBlue,
+              color: theme == AppTheme.LIGHT ? Palette.midBlue : Colors.white,
               size: 24,
             ),
             Container(
@@ -26,7 +27,9 @@ class DrawerTab extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Palette.midBlue),
+                    color: theme == AppTheme.LIGHT
+                        ? Palette.midBlue
+                        : Colors.white),
               ),
             )
           ],

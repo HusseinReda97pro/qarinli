@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/config/theme.dart';
 
 class ImagesSlider extends StatefulWidget {
   @override
@@ -56,7 +57,7 @@ class _ImagesSliderState extends State<ImagesSlider> {
               viewportFraction: 1,
               aspectRatio: 2.0,
               initialPage: 0,
-              height: MediaQuery.of(context).size.width > 600 ?240:120.0,
+              height: MediaQuery.of(context).size.width > 600 ? 240 : 120.0,
               onPageChanged: (index, _) {
                 setState(() {
                   _current = index;
@@ -72,7 +73,13 @@ class _ImagesSliderState extends State<ImagesSlider> {
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: _current == index ? Palette.yellow : Palette.midBlue,
+                color: _current == index
+                    ? theme == AppTheme.LIGHT
+                        ? Palette.yellow
+                        : Colors.black54
+                    : theme == AppTheme.LIGHT
+                        ? Palette.midBlue
+                        : Colors.white,
               ),
             );
           }),

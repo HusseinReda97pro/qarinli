@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
+import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/productScreen/product_screen.dart';
 import 'package:qarinli/views/widgets/columnbuilder/columnbuilder.dart';
@@ -44,11 +45,16 @@ class ProductCard extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
                       width: MediaQuery.of(context).size.width * 0.65,
                       child: Text(
-                        product.price + ' ر.س',
+                        product.price.isNotEmpty
+                            ? double.parse(product.price).toStringAsFixed(2) +
+                                ' ر.س'
+                            : '',
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.right,
                         style: TextStyle(
-                            color: Colors.green[700],
+                            color: theme == AppTheme.LIGHT
+                                ? Palette.green
+                                : Colors.white,
                             fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -64,7 +70,9 @@ class ProductCard extends StatelessWidget {
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 fontSize: 10,
-                                color: Palette.black,
+                                color: theme == AppTheme.LIGHT
+                                    ? Palette.black
+                                    : Colors.white,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -123,6 +131,7 @@ class ProductCard extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                     width: MediaQuery.of(context).size.width * 0.85,
                     child: Card(
+                      elevation: 3.0,
                       // color: Colors.black,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0),
@@ -134,11 +143,15 @@ class ProductCard extends StatelessWidget {
                           children: [
                             ClipOval(
                               child: Container(
-                                color: Theme.of(context).primaryColor,
+                                color: theme == AppTheme.LIGHT
+                                    ? Palette.midBlue
+                                    : Colors.white,
                                 child: Icon(
                                   Icons.arrow_right,
                                   size: 24.0,
-                                  color: Colors.white,
+                                  color: theme == AppTheme.LIGHT
+                                      ? Colors.white
+                                      : Palette.midBlue,
                                 ),
                               ),
                             ),
@@ -156,7 +169,11 @@ class ProductCard extends StatelessWidget {
                                 ),
                                 Text(product.shops[index].domain,
                                     style: TextStyle(
-                                        fontSize: 12.0, color: Palette.black)),
+                                      fontSize: 12.0,
+                                      color: theme == AppTheme.LIGHT
+                                          ? Palette.black
+                                          : Colors.white,
+                                    )),
                               ],
                             )
                           ],
