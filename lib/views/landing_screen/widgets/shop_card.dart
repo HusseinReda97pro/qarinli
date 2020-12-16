@@ -17,7 +17,10 @@ class ShopCard extends StatelessWidget {
           width: 70,
           height: 70,
           margin: EdgeInsets.all(10.0),
-          child: Image.asset(imageURL)),
+          child: Image.asset(
+            imageURL,
+            fit: BoxFit.contain,
+          )),
     );
   }
 }

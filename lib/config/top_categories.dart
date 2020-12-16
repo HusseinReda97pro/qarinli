@@ -1,4 +1,5 @@
 import 'package:qarinli/models/category.dart';
+import 'package:qarinli/models/fetchedProducts.dart';
 
 // List<Category> mobsCategories = [
 //   Category(name: 'ساعات ذكية', id: 1673),
@@ -39,49 +40,67 @@ import 'package:qarinli/models/category.dart';
 
 List<Category> topCategories = [
   Category(
-    name: 'موبايلات وتابلت وساعات ذكية',
-    id: 778,
-    imageUrl: 'assets/top_categories/mobs.png',
-    // subCategories: mobsCategories,
-  ),
+      name: 'موبايلات وتابلت وساعات ذكية',
+      id: 778,
+      imageUrl: 'assets/top_categories/mobs.png',
+      fetchedProducts:
+          FetchedProducts(products: [], totalPages: 0, totalResults: 0),
+      productsIsLoading: false,
+      currentPage: 1),
   Category(
-    name: 'كمبيوتر ولابتوب',
-    id: 783,
-    imageUrl: 'assets/top_categories/laptops.png',
-    // subCategories: laptopCategories,
-  ),
+      name: 'كمبيوتر ولابتوب',
+      id: 783,
+      imageUrl: 'assets/top_categories/laptops.png',
+      fetchedProducts:
+          FetchedProducts(products: [], totalPages: 0, totalResults: 0),
+      productsIsLoading: false,
+      currentPage: 1),
   Category(
-    name: 'كاميرات',
-    id: 786,
-    imageUrl: 'assets/top_categories/cams.png',
-    // subCategories: camsCategories
-  ),
+      name: 'كاميرات',
+      id: 786,
+      imageUrl: 'assets/top_categories/cams.png',
+      fetchedProducts:
+          FetchedProducts(products: [], totalPages: 0, totalResults: 0),
+      productsIsLoading: false,
+      currentPage: 1),
   Category(
-    name: 'الصحة والجمال',
-    id: 790,
-    imageUrl: 'assets/top_categories/se7a.png',
-    // subCategories: se7aCategories
-  ),
+      name: 'الصحة والجمال',
+      id: 790,
+      imageUrl: 'assets/top_categories/se7a.png',
+      fetchedProducts:
+          FetchedProducts(products: [], totalPages: 0, totalResults: 0),
+      productsIsLoading: false,
+      currentPage: 1),
   Category(
-    name: 'عطور',
-    id: 794,
-    imageUrl: 'assets/top_categories/ator.png',
-    // subCategories: atorCategories
-  ),
+      name: 'عطور',
+      id: 794,
+      imageUrl: 'assets/top_categories/ator.png',
+      fetchedProducts:
+          FetchedProducts(products: [], totalPages: 0, totalResults: 0),
+      productsIsLoading: false,
+      currentPage: 1),
   Category(
-    name: 'ازياء المرأة',
-    id: 1867,
-    imageUrl: 'assets/top_categories/clothes.png',
-    // subCategories: womenClothesCategories,
-  ),
+      name: 'ازياء المرأة',
+      id: 1867,
+      imageUrl: 'assets/top_categories/clothes.png',
+      fetchedProducts:
+          FetchedProducts(products: [], totalPages: 0, totalResults: 0),
+      productsIsLoading: false,
+      currentPage: 1),
   Category(
-    name: 'ملابس أحذية و اكسسواراتها',
-    id: 797,
-    imageUrl: 'assets/top_categories/clothes.png',
-    // subCategories: clothesCategories,
-  ),
+      name: 'ملابس أحذية و اكسسواراتها',
+      id: 797,
+      imageUrl: 'assets/top_categories/clothes.png',
+      fetchedProducts:
+          FetchedProducts(products: [], totalPages: 0, totalResults: 0),
+      productsIsLoading: false,
+      currentPage: 1),
   Category(
       name: 'منتجات الأطفال',
       id: 1096,
-      imageUrl: 'assets/top_categories/kids.png'),
+      imageUrl: 'assets/top_categories/kids.png',
+      fetchedProducts:
+          FetchedProducts(products: [], totalPages: 0, totalResults: 0),
+      productsIsLoading: false,
+      currentPage: 1),
 ];

@@ -116,21 +116,25 @@ class _LanddingScreenState extends State<LanddingScreen> {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
-                label: 'Home',
+                // label: 'Home',
+                label: 'الرئيسية',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite_outline),
-                label: 'Favorites',
+                // label: 'Favorites',
+                label: 'المفضلة',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
-                label: 'Products',
+                // label: 'Products',
+                label: 'المنتجات',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.person_outline,
                 ),
-                label: 'My Qarinli',
+                // label: 'My Qarinli',
+                label: 'قارنلي',
               ),
             ],
             currentIndex: _selectedTabIndex,
@@ -147,9 +151,11 @@ class _LanddingScreenState extends State<LanddingScreen> {
                   //     _scrollController = _scrollControllerHomeTab;
                   //   }
 
-                  //   if (index == 1) {
-                  //     _scrollController = _scrollControllerFavouritesTab;
-                  //   }
+                  if (index == 1 && model.currentUser != null) {
+                    // _scrollController = _scrollControllerFavouritesTab;
+                    String favorites = model.generateFavoritesList();
+                    model.getCurrentProducts(favorites: favorites);
+                  }
 
                   //   if (index == 2) {
                   //     _scrollController = _scrollControllerProductsTab;
@@ -160,9 +166,9 @@ class _LanddingScreenState extends State<LanddingScreen> {
                   //   }
                 });
                 // get sub categories for top categories
-                if (index == 2) {
-                  model.getStartPageSubCategories();
-                }
+                // if (index == 2) {
+                //   model.getStartPageSubCategories();
+                // }
               }
             },
           ),

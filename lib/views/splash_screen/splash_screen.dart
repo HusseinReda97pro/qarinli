@@ -16,6 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 2), () async {
       MyApp.mainModel.loadProductsLanding();
+      MyApp.mainModel.getStartPageSubCategories();
+      MyApp.mainModel.getStartPageCategoriesProducts();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       // await prefs.setBool('firstTime', value);
       bool firstTime = prefs.getBool('firstTime');

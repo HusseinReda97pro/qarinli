@@ -29,7 +29,11 @@ class OffersPrices extends StatelessWidget {
               onPressed: () async {
                 String url = shops[index].offerLink;
                 if (await canLaunch(url)) {
-                  await launch(url);
+                  await launch(
+                    url,
+                    forceSafariVC: false,
+                    forceWebView: false,
+                  );
                 } else {
                   throw 'Could not launch $url';
                 }
@@ -42,8 +46,12 @@ class OffersPrices extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          double.parse(shops[index].price).toStringAsFixed(2) +
-                              ' SAR',
+                          shops[index].price.isNotEmpty
+                              ? double.parse(shops[index].price)
+                                      .toStringAsFixed(2) +
+                                  ' ر.س'
+                              : '',
+                          textDirection: TextDirection.rtl,
                           style: TextStyle(
                               fontSize: 20,
                               color: theme == AppTheme.LIGHT
@@ -63,8 +71,8 @@ class OffersPrices extends StatelessWidget {
                     width: 30,
                     child: shops[index].domain != null
                         ? FadeInImage(
-                            // width: 60,
-                            // height: 60,
+                            width: 60,
+                            height: 60,
                             image: CachedNetworkImageProvider(
                               'https://www.qarinli.com/wp-content/uploads/ce-logos/icon_' +
                                   shops[index]

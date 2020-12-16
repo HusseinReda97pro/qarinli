@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:qarinli/models/category.dart';
 // import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/ProductsScreen/products_screen.dart';
-import 'package:qarinli/views/widgets/loading.dart';
 
 import '../../../main.dart';
 // import 'package:qarinli/controllers/products.dart';
@@ -14,13 +13,9 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        loading(context, 'looding');
-        print(category.id);
-        MyApp.mainModel.currentProducts.clear();
-        MyApp.mainModel.currentProducts = await MyApp
-            .mainModel.productsController
-            .getProducts(page: 1, categoryId: category.id);
-        Navigator.of(context).pop();
+        MyApp.mainModel
+            .getCurrentProducts(pageNumber: 1, categoryId: category.id);
+
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
           return ProductsScreen(

@@ -19,7 +19,7 @@ class ShopsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        crossAxisCount: 3,
+        crossAxisCount: MediaQuery.of(context).size.width > 600 ? 5 : 3,
         children: List<Widget>.generate(43, (index) {
           return ShopCard(
               imageURL: 'assets/shops/' + (index + 1).toString() + '.jpg');

@@ -1,8 +1,21 @@
+import 'package:qarinli/models/fetchedProducts.dart';
+
 class Category {
   final int id;
   String name;
   final String imageUrl;
   List<Category> subCategories;
   int count;
-  Category({this.id, this.name, this.imageUrl, this.subCategories, this.count});
+  FetchedProducts fetchedProducts;
+  int currentPage;
+  bool productsIsLoading;
+  Category(
+      {this.id,
+      this.name,
+      this.imageUrl,
+      this.subCategories,
+      this.count,
+      this.fetchedProducts,
+      this.currentPage,
+      this.productsIsLoading});
 }

@@ -61,13 +61,17 @@ class CategoryController {
       } on SocketException {
         throw Exception('No Internet connection.');
       }
+      String imageUrl;
 
       for (var category in categoriesData) {
+        try {
+          imageUrl = category['image']['src'];
+        } catch (_) {}
         categories.add(Category(
-          id: category['id'],
-          name: category['name'],
-          count: category['count'],
-        ));
+            id: category['id'],
+            name: category['name'],
+            count: category['count'],
+            imageUrl: imageUrl));
       }
     } catch (_) {}
     return categories;

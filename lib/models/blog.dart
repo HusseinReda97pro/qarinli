@@ -4,20 +4,20 @@ import 'package:qarinli/models/category.dart';
 class Blog {
   final String id;
   final Author author;
-  final String imageUrl;
+  final String featuredImage;
   final String link;
   final String title;
   final String content;
   final String shortDiscription;
   final int views;
   final DateTime date;
-  final List<dynamic> categoriesIds;
+  // final List<dynamic> categoriesIds;
   List<Category> categories;
 
   Blog(
       {this.author,
-      this.imageUrl,
-      this.categoriesIds,
+      this.featuredImage,
+      // this.categoriesIds,
       this.categories,
       this.id,
       this.link,

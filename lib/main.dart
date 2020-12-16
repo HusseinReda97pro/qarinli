@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:qarinli/config/dark_theme.dart';
 import 'package:qarinli/config/light_theme.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
+import 'package:qarinli/views/auth/login_screen.dart';
+import 'package:qarinli/views/auth/signup_screen.dart';
 import 'package:qarinli/views/landing_screen/landing_screen.dart';
 import 'package:qarinli/views/splash_screen/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,26 +29,34 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     mainModel = MainModel();
+    mainModel.autoLogin();
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences.getInstance().then((prefs) {
       String appTheme = prefs.getString('theme');
+      print(appTheme);
+
       if (appTheme == null) {
+        // print('null');
         theme = AppTheme.DARK;
       } else {
         if (appTheme == 'light') {
+          // print('light');
           theme = AppTheme.LIGHT;
         } else {
           if (appTheme == 'dark') {
+            // print('dark');
             theme = AppTheme.DARK;
           }
         }
       }
     });
+    // print(theme);
+    Brightness brightness =
+        theme == AppTheme.LIGHT ? Brightness.light : Brightness.dark;
     return ChangeNotifierProvider(
       create: (context) => mainModel,
       child: DynamicTheme(
-        defaultBrightness:
-            theme == AppTheme.LIGHT ? Brightness.light : Brightness.dark,
+        defaultBrightness: brightness,
         data: (brightness) => theme == AppTheme.LIGHT ? lighTheme : darkTheme,
         themedWidgetBuilder: (context, _theme) {
           return MaterialApp(
@@ -66,6 +76,8 @@ class MyApp extends StatelessWidget {
             home: SplashScreen(),
             routes: {
               '/landing': (BuildContext context) => LanddingScreen(),
+              '/signup': (BuildContext context) => SignUpScreen(),
+              '/login': (BuildContext context) => LoginScreen(),
             },
           );
         },

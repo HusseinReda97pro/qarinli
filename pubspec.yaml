@@ -3,7 +3,7 @@ description: A new Flutter application.
 
 publish_to: "none"
 
-version: 1.0.0+2
+version: 1.0.9+9
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -31,7 +31,9 @@ dependencies:
   dynamic_theme: ^1.0.1
   linked_scroll_controller: ^0.1.2
   material_design_icons_flutter: ^4.0.5755
-  in_app_review: ^1.0.3
+  # in_app_review: ^1.0.3
+  share: ^0.6.5+4
+  connectivity: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,7 @@ flutter:
     - assets/shops/
     - assets/splash_screens/
     - assets/logo_spinner.png
+    - assets/moda/
   fonts:
     - family: Hacen
       fonts:

@@ -38,7 +38,9 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                     ? Container(
                         margin: EdgeInsets.only(left: 15, top: 15.0),
                         child: Text(
-                          'Sub Categories',
+                          // 'Sub Categories',
+                          'الفئات الفرعية',
+                          textDirection: TextDirection.rtl,
                           style: TextStyle(fontSize: 24),
                         ),
                       )
@@ -59,18 +61,20 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                           },
                         ),
                       )
-                    : Spinner()
-                : SizedBox.shrink(),
+                    : SizedBox.shrink()
+                : Spinner(),
             model.currentProducts.length > 0
                 ? Container(
                     margin: EdgeInsets.only(left: 15, top: 15.0),
                     child: Text(
-                      'Complete Catalogue',
+                      // 'Complete Catalogue',
+                      'كتالوج المنتجات',
+                      textDirection: TextDirection.rtl,
                       style: TextStyle(fontSize: 24),
                     ),
                   )
                 : SizedBox.shrink(),
-            model.currentProductsIsLoadin
+            model.currentProductsIsLoading
                 ? Spinner()
                 : model.currentProducts.length > 0
                     ? ColumnBuilder(
@@ -105,7 +109,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                       onPressed: () async {
                                         if (pageNamber > 1) {
                                           model.getCurrentProducts(
-                                            pageNamber: pageNamber + 1,
+                                            pageNumber: pageNamber + 1,
                                             categoryId:
                                                 model.currentCategory.id,
                                           );
@@ -136,7 +140,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                       ),
                                       onPressed: () async {
                                         model.getCurrentProducts(
-                                            pageNamber: pageNamber + 1,
+                                            pageNumber: pageNamber + 1,
                                             categoryId:
                                                 model.currentCategory.id);
                                         setState(() {

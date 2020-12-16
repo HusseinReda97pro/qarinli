@@ -66,7 +66,11 @@ class RelatedProductCard extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    double.parse(product.price).toStringAsFixed(2) + ' SAR',
+                    product.price.isNotEmpty
+                        ? double.parse(product.price).toStringAsFixed(2) +
+                            ' ر.س'
+                        : '',
+                    textDirection: TextDirection.rtl,
                     style: TextStyle(
                         color: theme == AppTheme.LIGHT
                             ? Colors.black

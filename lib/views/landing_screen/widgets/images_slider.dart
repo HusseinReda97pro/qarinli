@@ -57,7 +57,7 @@ class _ImagesSliderState extends State<ImagesSlider> {
               viewportFraction: 1,
               aspectRatio: 2.0,
               initialPage: 0,
-              height: MediaQuery.of(context).size.width > 600 ? 240 : 120.0,
+              height: MediaQuery.of(context).size.width > 600 ? 340 : 120.0,
               onPageChanged: (index, _) {
                 setState(() {
                   _current = index;

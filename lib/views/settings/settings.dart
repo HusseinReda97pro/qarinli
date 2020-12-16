@@ -36,7 +36,7 @@ class _SettingsState extends State<Settings> {
               children: [
                 Switch(
                     activeColor: Colors.white,
-                    value: theme == AppTheme.LIGHT ? false : true,
+                    value: theme == AppTheme.LIGHT ? true : false,
                     onChanged: (_) async {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();

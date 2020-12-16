@@ -10,7 +10,7 @@ class SectionHeader extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
         child: Row(
           children: [
             Text(
@@ -27,7 +27,8 @@ class SectionHeader extends StatelessWidget {
             GestureDetector(
               onTap: onTap,
               child: Text(
-                'More',
+                // 'More',
+                'المزيد',
                 style: TextStyle(
                     color: theme == AppTheme.LIGHT
                         ? Theme.of(context).primaryColor

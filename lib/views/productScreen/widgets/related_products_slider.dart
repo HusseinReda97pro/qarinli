@@ -9,21 +9,19 @@ class RelatedProductsSlider extends StatelessWidget {
   final List<Product> products;
   final int categoryId;
   final bool withoutOffers;
-  final TextDirection textDirection;
 
   const RelatedProductsSlider(
       {@required this.isLoading,
       @required this.products,
       this.categoryId,
-      this.withoutOffers,
-      this.textDirection = TextDirection.rtl});
+      this.withoutOffers});
 
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? ProgressIndicatorV2()
         : Directionality(
-            textDirection: textDirection,
+            textDirection: TextDirection.rtl,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(

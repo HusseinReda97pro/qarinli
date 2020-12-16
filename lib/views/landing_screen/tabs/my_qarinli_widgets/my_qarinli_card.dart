@@ -12,28 +12,32 @@ class MyQarinliCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6.0),
-          side: BorderSide(color: Palette.midBlue, width: 2),
-        ),
-        child: Container(
-          margin: EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 24.0,
-                color: theme == AppTheme.LIGHT ? Colors.black : Palette.yellow,
-              ),
-              SizedBox(
-                width: 8.0,
-              ),
-              Text(
-                text,
-                style: TextStyle(fontSize: 24.0),
-              )
-            ],
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6.0),
+            side: BorderSide(color: Palette.midBlue, width: 2),
+          ),
+          child: Container(
+            margin: EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  size: 24.0,
+                  color:
+                      theme == AppTheme.LIGHT ? Colors.black : Palette.yellow,
+                ),
+                SizedBox(
+                  width: 8.0,
+                ),
+                Text(
+                  text,
+                  style: TextStyle(fontSize: 24.0),
+                )
+              ],
+            ),
           ),
         ),
       ),

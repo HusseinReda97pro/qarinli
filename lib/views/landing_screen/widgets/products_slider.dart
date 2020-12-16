@@ -29,11 +29,13 @@ class ProductsSlider extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10.0),
-                child: RowBuilder(
-                  itemCount: products.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ProductCard(product: products[index]);
-                  },
+                child: IntrinsicHeight(
+                  child: RowBuilder(
+                    itemCount: products.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ProductCard(product: products[index]);
+                    },
+                  ),
                 ),
               ),
             ),

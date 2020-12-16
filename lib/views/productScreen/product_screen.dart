@@ -11,11 +11,14 @@ import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/productScreen/widgets/best_price.dart';
 import 'package:qarinli/views/productScreen/widgets/offers_prices.dart';
-import 'package:qarinli/views/productScreen/widgets/products_slider_prodduct_screen.dart';
+import 'package:qarinli/views/productScreen/widgets/related_products_slider.dart';
 import 'package:qarinli/views/productScreen/widgets/youtube_video_player.dart';
+import 'package:qarinli/views/unlogedin_user.dart';
+import 'package:qarinli/views/widgets/alert_message.dart';
 import 'package:qarinli/views/widgets/app_drawer/app_drawer.dart';
 import 'package:qarinli/views/widgets/appbar.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:share/share.dart';
 
 class ProductScreen extends StatefulWidget {
   final Product product;
@@ -32,18 +35,18 @@ class _ProductScreenState extends State<ProductScreen> {
   int _currentVideo = 0;
   int _currentImage = 0;
 
-  Widget _buildCardTitle(String title) {
-    return Card(
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-              color: theme == AppTheme.LIGHT ? Palette.midBlue : Colors.white,
-              fontSize: 24),
-        ),
-      ),
-    );
-  }
+  // Widget _buildCardTitle(String title) {
+  //   return Card(
+  //     child: Center(
+  //       child: Text(
+  //         title,
+  //         style: TextStyle(
+  //             color: theme == AppTheme.LIGHT ? Palette.midBlue : Colors.white,
+  //             fontSize: 24),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -70,14 +73,17 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
         endDrawer: AppDrawer(),
         body: ListView(
+          padding: EdgeInsets.all(5.0),
           children: [
             Stack(
               children: [
                 Align(
                   alignment: Alignment.center,
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    height: MediaQuery.of(context).size.width * 0.6,
+                    width: MediaQuery.of(context).size.width > 600 ? 400 : 150,
+                    // height: MediaQuery.of(context).size.width > 600 ? 250 : 150,
+                    // width: MediaQuery.of(context).size.width * .8,
+                    height: MediaQuery.of(context).size.width > 600 ? 400 : 150,
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6.0),
@@ -89,9 +95,22 @@ class _ProductScreenState extends State<ProductScreen> {
                             builder: (BuildContext context) {
                               return Container(
                                 child: image != null
-                                    ? FadeInImage(
-                                        image:
-                                            CachedNetworkImageProvider(image),
+                                    ?
+                                    //  Image.network(
+                                    //     image,
+                                    //     width:
+                                    // MediaQuery.of(context).size.width >
+                                    //         600
+                                    //     ? 400
+                                    //     : 150,
+                                    //     fit: BoxFit.contain,
+                                    //   )
+
+                                    FadeInImage(
+                                        fit: BoxFit.contain,
+                                        image: CachedNetworkImageProvider(
+                                          image,
+                                        ),
                                         placeholder: AssetImage(
                                             'assets/placeholder_image.png'),
                                       )
@@ -105,10 +124,13 @@ class _ProductScreenState extends State<ProductScreen> {
                         options: CarouselOptions(
                             autoPlay: false,
                             enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
                             viewportFraction: 1,
-                            aspectRatio: 2.0,
+                            aspectRatio: 16 / 9,
                             initialPage: 0,
-                            height: 200.0,
+                            height: MediaQuery.of(context).size.width > 600
+                                ? 500
+                                : 200,
                             onPageChanged: (index, _) {
                               setState(() {
                                 _currentImage = index;
@@ -119,12 +141,13 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                 ),
                 Positioned(
-                  right: 20,
+                  right: 10,
                   top: 0,
                   child: Column(
                     children: [
                       Container(
-                        width: 8.0,
+                        // width: 25.0,
+                        // color: Colors.red,
                         child: IconButton(
                           color: theme == AppTheme.LIGHT
                               ? Colors.black
@@ -132,36 +155,75 @@ class _ProductScreenState extends State<ProductScreen> {
                           padding: EdgeInsets.all(0),
                           icon: Icon(Icons.share),
                           onPressed: () {
-                            //TODO shar product
+                            Share.share(widget.product.link);
                           },
                         ),
                       ),
                       Container(
-                        width: 8.0,
+                        // width: 8.0,
                         child: IconButton(
                           color: theme == AppTheme.LIGHT
                               ? Colors.black
                               : Palette.yellow,
                           padding: EdgeInsets.all(0),
-                          icon: Icon(Icons.favorite_outline),
-                          onPressed: () {
-                            //TODO add to favorites
+                          icon: Icon(model.currentUser == null
+                              ? Icons.favorite_outline
+                              : model.currentUser.favoritesProducts
+                                      .contains(widget.product.id)
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline),
+                          onPressed: () async {
+                            if (model.currentUser == null) {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return UnLogedinUser(
+                                  fullScreen: true,
+                                );
+                              }));
+                            } else {
+                              if (model.currentUser.favoritesProducts
+                                  .contains(widget.product.id)) {
+                                bool done = await model.removeFavorite(
+                                    productId: widget.product.id);
+                                if (!done) {
+                                  showAlertMessage(
+                                      context: context,
+                                      title: 'حدث خطأ ما',
+                                      message: Text(
+                                        'حدث خطأ غير معروف',
+                                        textAlign: TextAlign.center,
+                                      ));
+                                }
+                              } else {
+                                bool done = await model.addFavorite(
+                                    productId: widget.product.id);
+                                if (!done) {
+                                  showAlertMessage(
+                                      context: context,
+                                      title: 'حدث خطأ ما',
+                                      message: Text(
+                                        'حدث خطأ غير معروف',
+                                        textAlign: TextAlign.center,
+                                      ));
+                                }
+                              }
+                            }
                           },
                         ),
                       ),
-                      Container(
-                        width: 8.0,
-                        child: IconButton(
-                          color: theme == AppTheme.LIGHT
-                              ? Colors.black
-                              : Palette.yellow,
-                          padding: EdgeInsets.all(0),
-                          icon: Icon(Icons.alarm_outlined),
-                          onPressed: () {
-                            //TODO add to wish list
-                          },
-                        ),
-                      )
+                      // Container(
+                      //   // width: 8.0,
+                      //   child: IconButton(
+                      //     color: theme == AppTheme.LIGHT
+                      //         ? Colors.black
+                      //         : Palette.yellow,
+                      //     padding: EdgeInsets.all(0),
+                      //     icon: Icon(Icons.alarm_outlined),
+                      //     onPressed: () {
+
+                      //     },
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -206,9 +268,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             widget.product.shops.length > 0
                 ? GestureDetector(
-                    onTap: () {
-                      //TODO show all prices
-                    },
+                    onTap: () {},
                     child: Card(
                       margin: EdgeInsets.symmetric(horizontal: 10.0),
                       shape: RoundedRectangleBorder(
@@ -219,7 +279,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         margin: EdgeInsets.symmetric(vertical: 2.0),
                         color: Palette.grey,
                         child: Text(
-                          widget.product.shops.length.toString() + ' Prices',
+                          // widget.product.shops.length.toString() + ' Prices',
+                          widget.product.shops.length.toString() + ' أسعار',
+                          textDirection: TextDirection.rtl,
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 24.0, color: Colors.white),
                         ),
@@ -231,7 +293,9 @@ class _ProductScreenState extends State<ProductScreen> {
                 ? Container(
                     margin: EdgeInsets.all(10.0),
                     child: Text(
-                      widget.product.shops.length.toString() + ' Prices',
+                      // widget.product.shops.length.toString() + ' Prices',
+                      widget.product.shops.length.toString() + ' أسعار',
+                      textDirection: TextDirection.rtl,
                       style: TextStyle(fontSize: 24.0),
                     ),
                   )
@@ -249,7 +313,9 @@ class _ProductScreenState extends State<ProductScreen> {
               margin: EdgeInsets.only(top: 15),
               padding: EdgeInsets.all(10.0),
               child: Text(
-                'Product Specifications',
+                // 'Product Specifications',
+                'الموصفات',
+                textDirection: TextDirection.rtl,
                 style: TextStyle(
                   fontSize: 24.0,
                 ),
@@ -263,7 +329,9 @@ class _ProductScreenState extends State<ProductScreen> {
               margin: EdgeInsets.only(top: 15),
               padding: EdgeInsets.all(10.0),
               child: Text(
-                'Product Specifications',
+                // 'Product Specifications',
+                'مقارنة المنتج',
+                textDirection: TextDirection.rtl,
                 style: TextStyle(
                   fontSize: 24.0,
                 ),
@@ -285,7 +353,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         margin: EdgeInsets.all(10.0),
                         width: MediaQuery.of(context).size.width * 0.85,
                         child: Text(
-                          'compare this product with others',
+                          // 'compare this product with others',
+                          'قارن هذا المنتج مع منتجات أخرى',
+                          textDirection: TextDirection.rtl,
                           style: TextStyle(fontSize: 18.0, color: Colors.white),
                         ),
                       ),
@@ -302,7 +372,9 @@ class _ProductScreenState extends State<ProductScreen> {
                           color: Colors.white,
                           onPressed: () {},
                           child: Text(
-                            'Compare',
+                            // 'Compare',
+                            'مقارنة',
+                            textDirection: TextDirection.rtl,
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
@@ -313,24 +385,26 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 15, left: 10),
+              margin: EdgeInsets.only(top: 15, right: 10),
               // padding: EdgeInsets.all(10.0),
               child: Text(
-                'User Reviews',
+                // 'User Reviews',
+                'تقييمات المستخدم',
+                textDirection: TextDirection.rtl,
                 style: TextStyle(
                   fontSize: 24.0,
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Text(
-                'How many stars would you give this product?',
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
+            // Container(
+            //   margin: EdgeInsets.only(right: 10),
+            //   child: Text(
+            //     'How many stars would you give this product?',
+            //     style: TextStyle(
+            //       fontSize: 16.0,
+            //     ),
+            //   ),
+            // ),
             Center(
               child: RatingBarIndicator(
                 rating: double.parse(widget.product.reviews.averageRating),
@@ -345,16 +419,20 @@ class _ProductScreenState extends State<ProductScreen> {
                 itemSize: 42,
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 15, left: 10),
-              // padding: EdgeInsets.all(10.0),
-              child: Text(
-                'Videos',
-                style: TextStyle(
-                  fontSize: 24.0,
-                ),
-              ),
-            ),
+            widget.product.youtubeVideos.length > 0
+                ? Container(
+                    margin: EdgeInsets.only(top: 15, right: 10),
+                    // padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      // 'Videos',
+                      'فيديوهات',
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(
+                        fontSize: 24.0,
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink(),
             widget.product.youtubeVideos.length > 0
                 ? Container(
                     margin: EdgeInsets.symmetric(horizontal: 10.0),
@@ -426,10 +504,12 @@ class _ProductScreenState extends State<ProductScreen> {
                 : SizedBox.shrink(),
             !model.relatedProductsIsLoading && model.relatedProducts.length > 0
                 ? Container(
-                    margin: EdgeInsets.only(top: 15, left: 10),
+                    margin: EdgeInsets.only(top: 15, right: 10),
                     // padding: EdgeInsets.all(10.0),
                     child: Text(
-                      'Other Alternatives',
+                      // 'Other Alternatives',
+                      'منتجات مقترحه',
+                      textDirection: TextDirection.rtl,
                       style: TextStyle(
                         fontSize: 24.0,
                       ),
@@ -439,7 +519,6 @@ class _ProductScreenState extends State<ProductScreen> {
             RelatedProductsSlider(
               isLoading: model.relatedProductsIsLoading,
               products: model.relatedProducts,
-              textDirection: TextDirection.ltr,
             ),
             SizedBox(
               height: 100,

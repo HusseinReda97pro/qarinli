@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:qarinli/config/api_authorization.dart';
+import 'package:qarinli/config/category_ids.dart';
+import 'package:qarinli/models/fetchedProducts.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:http/http.dart' as http;
 import 'package:qarinli/models/reviews.dart';
@@ -10,46 +12,94 @@ import 'package:qarinli/models/youtube_video.dart';
 
 class ProductsController {
   // Get Products with offers
-  Future<List<Product>> getProducts({
-    int page,
-    int categoryId,
-    bool withoutOffers = false,
-    choosen = false,
-    moda = false,
-  }) async {
-    // print(categoryId);
-
+  Future<FetchedProducts> getProducts(
+      {int page,
+      int categoryId,
+      bool withoutOffers = false,
+      choosen = false,
+      moda = false,
+      comparison = false,
+      search,
+      topSales = false,
+      favorites}) async {
     List<Product> products = [];
+    int totalPages = 0;
+    int totalResults = 0;
     try {
       var productsData;
       try {
         http.Response response;
-        if (choosen) {
+        http.Response response_2;
+        if (favorites != null) {
           response = await http.get(
-              'https://www.qarinli.com/wp-json/wc/v3/products?featured=true',
+              'https://www.qarinli.com/wp-json/wc/v3/products?include=$favorites',
               headers: <String, String>{'authorization': basicAuth});
         } else {
-          if (moda) {
+          if (topSales) {
             response = await http.get(
-                'https://www.qarinli.com/wp-json/wc/v3/products?category=$categoryId&featured=true',
+                'https://www.qarinli.com/wp-json/wc/v3/products?tag=$COMPARISON_TAG_ID&min_price=200&max_price=400',
                 headers: <String, String>{'authorization': basicAuth});
           } else {
-            response = await http.get(
-                'https://www.qarinli.com/wp-json/wc/v3/products?page=$page&category=$categoryId',
-                headers: <String, String>{'authorization': basicAuth});
+            if (search != null) {
+              response = await http.get(
+                  'https://www.qarinli.com/wp-json/wc/v3/products?search=$search&status=publish&post_type=product&page=$page',
+                  headers: <String, String>{'authorization': basicAuth});
+            } else {
+              if (comparison) {
+                response = await http.get(
+                    'https://www.qarinli.com/wp-json/wc/v3/products?tag=$COMPARISON_TAG_ID&page=$page',
+                    headers: <String, String>{'authorization': basicAuth});
+              } else {
+                if (choosen) {
+                  response = await http.get(
+                      'https://www.qarinli.com/wp-json/wc/v3/products?featured=true',
+                      headers: <String, String>{'authorization': basicAuth});
+                } else {
+                  if (moda) {
+                    response = await http.get(
+                        'https://www.qarinli.com/wp-json/wc/v3/products?category=$categoryId&featured=true&page=$page',
+                        headers: <String, String>{'authorization': basicAuth});
+                    response_2 = await http.get(
+                        'https://www.qarinli.com/wp-json/wc/v3/products?category=797&per_page=7',
+                        headers: <String, String>{'authorization': basicAuth});
+                  } else {
+                    response = await http.get(
+                        'https://www.qarinli.com/wp-json/wc/v3/products?page=$page&category=$categoryId',
+                        headers: <String, String>{'authorization': basicAuth});
+                  }
+                }
+              }
+            }
           }
         }
+        try {
+          totalResults = int.parse(response.headers['x-wp-total']);
+        } catch (e) {
+          print(e);
+        }
+        try {
+          totalPages = int.parse(response.headers['x-wp-totalpages']);
+        } catch (_) {}
+
         var responseBody = await json.decode(response.body);
+
+        // print(response.headers);
         if (responseBody is List<dynamic> || responseBody['message'] == null) {
           productsData = responseBody;
+          if (moda) {
+            var responseBody_2 = await json.decode(response_2.body);
+            productsData += responseBody_2;
+            // print(productsData);
+          }
         } else {
           // return responseBody['message'];
-          print(page);
-          print(categoryId);
+          // print(page);
+          // print(categoryId);
           print(
-              '________________________________________________   Error  for products api _______________________');
+              '________________________________________________   Error  form products api _______________________');
           print(responseBody['message']);
-          return [];
+          return FetchedProducts(
+              products: [], totalPages: totalPages, totalResults: totalResults);
         }
       } on SocketException {
         throw Exception('No Internet connection.');
@@ -68,6 +118,7 @@ class ProductsController {
                 images: product['images'],
                 withoutOffers: true);
           }
+
           List<Shop> shops = getShopsOffers(metaData: metaData);
           List<YoutubeVideo> youtubeVideos =
               getYutubeVideos(metaData: metaData);
@@ -78,8 +129,11 @@ class ProductsController {
           // dynamic historOfPricesHTML =
           //     await getHistorOfPricesHTML(product['permalink']);
           String bestPriceURL = product['external_url'];
-          if (bestPriceURL.isEmpty) {
+          if (bestPriceURL.isEmpty && shops.length > 0) {
             bestPriceURL = getCheapestPrice(shops).offerLink;
+          }
+          if (imageURL == null) {
+            imageURL = images[0];
           }
 
           // print(shops);
@@ -99,15 +153,19 @@ class ProductsController {
               bestPriceURL: bestPriceURL
               // historOfPricesHTML: historOfPricesHTML
               ));
-        } catch (_) {}
+        } catch (e) {
+          print(
+              '____________________   Error inside single product  _______________________');
+          print(e.toString());
+        }
       }
     } catch (e) {
       print(
           '________________________________________________   Error  _______________________');
       print(e.toString());
     }
-
-    return products;
+    return FetchedProducts(
+        products: products, totalPages: totalPages, totalResults: totalResults);
   }
 
   // get single product
@@ -155,7 +213,6 @@ class ProductsController {
       if (bestPriceURL.isEmpty) {
         bestPriceURL = getCheapestPrice(shops).offerLink;
       }
-
       product = Product(
           id: productData['id'],
           link: productData['permalink'],

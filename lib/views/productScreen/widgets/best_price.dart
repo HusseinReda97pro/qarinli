@@ -21,7 +21,11 @@ class BestPrice extends StatelessWidget {
         onPressed: () async {
           String url = product.bestPriceURL;
           if (await canLaunch(url)) {
-            await launch(url);
+            await launch(
+              url,
+              forceSafariVC: false,
+              forceWebView: false,
+            );
           } else {
             throw 'Could not launch $url';
           }
@@ -37,8 +41,9 @@ class BestPrice extends StatelessWidget {
                         Text(
                           product.price.isNotEmpty
                               ? double.parse(product.price).toStringAsFixed(2) +
-                                  ' SAR'
+                                  ' ر.س'
                               : '',
+                          textDirection: TextDirection.rtl,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20.0,
