@@ -250,14 +250,23 @@ class _ProductsTabState extends State<ProductsTab> {
                                           if (topCategories[_selectedIndex]
                                                   .currentPage >
                                               1) {
-                                            model.getCurrentProducts(
-                                                pageNumber: topCategories[
-                                                            _selectedIndex]
-                                                        .currentPage -
-                                                    1,
+                                            model.getTopCategoryCurrentProducts(
+                                                selectedIndex: _selectedIndex,
                                                 categoryId: topCategories[
                                                         _selectedIndex]
-                                                    .id);
+                                                    .id,
+                                                pageNamber: topCategories[
+                                                            _selectedIndex]
+                                                        .currentPage -
+                                                    1);
+                                            // model.getCurrentProducts(
+                                            //     pageNumber: topCategories[
+                                            //                 _selectedIndex]
+                                            //             .currentPage -
+                                            //         1,
+                                            //     categoryId: topCategories[
+                                            //             _selectedIndex]
+                                            //         .id);
                                             setState(() {
                                               topCategories[_selectedIndex]
                                                   .currentPage -= 1;
@@ -270,11 +279,16 @@ class _ProductsTabState extends State<ProductsTab> {
                                 ),
                                 RoundedButton(
                                   onPressed: () async {
-                                    model.getCurrentProducts(
-                                      pageNumber: 1,
-                                      categoryId:
-                                          topCategories[_selectedIndex].id,
-                                    );
+                                    model.getTopCategoryCurrentProducts(
+                                        selectedIndex: _selectedIndex,
+                                        categoryId:
+                                            topCategories[_selectedIndex].id,
+                                        pageNamber: 1);
+                                    // model.getCurrentProducts(
+                                    //   pageNumber: 1,
+                                    //   categoryId:
+                                    //       topCategories[_selectedIndex].id,
+                                    // );
                                     setState(() {
                                       topCategories[_selectedIndex]
                                           .currentPage = 1;
@@ -320,12 +334,20 @@ class _ProductsTabState extends State<ProductsTab> {
                                                       horizontal: 3.0),
                                                   child: RoundedButton(
                                                     onPressed: () async {
-                                                      model.getCurrentProducts(
-                                                        pageNumber: (index + 2),
-                                                        categoryId: topCategories[
-                                                                _selectedIndex]
-                                                            .id,
-                                                      );
+                                                      model.getTopCategoryCurrentProducts(
+                                                          selectedIndex:
+                                                              _selectedIndex,
+                                                          categoryId: topCategories[
+                                                                  _selectedIndex]
+                                                              .id,
+                                                          pageNamber:
+                                                              (index + 2));
+                                                      // model.getCurrentProducts(
+                                                      //   pageNumber: (index + 2),
+                                                      //   categoryId: topCategories[
+                                                      //           _selectedIndex]
+                                                      //       .id,
+                                                      // );
                                                       setState(() {
                                                         topCategories[
                                                                     _selectedIndex]
@@ -354,12 +376,22 @@ class _ProductsTabState extends State<ProductsTab> {
                                         2
                                     ? RoundedButton(
                                         onPressed: () async {
-                                          model.getCurrentProducts(
-                                            pageNumber: model.currentTotalpages,
-                                            categoryId:
-                                                topCategories[_selectedIndex]
-                                                    .currentPage,
-                                          );
+                                          model.getTopCategoryCurrentProducts(
+                                              selectedIndex: _selectedIndex,
+                                              categoryId:
+                                                  topCategories[_selectedIndex]
+                                                      .id,
+                                              pageNamber:
+                                                  topCategories[_selectedIndex]
+                                                      .fetchedProducts
+                                                      .totalPages);
+
+                                          // model.getCurrentProducts(
+                                          //   pageNumber: model.currentTotalpages,
+                                          //   categoryId:
+                                          //       topCategories[_selectedIndex]
+                                          //           .currentPage,
+                                          // );
                                           setState(() {
                                             topCategories[_selectedIndex]
                                                     .currentPage =
@@ -375,7 +407,9 @@ class _ProductsTabState extends State<ProductsTab> {
                                         isSelceted:
                                             topCategories[_selectedIndex]
                                                     .currentPage ==
-                                                model.currentTotalpages,
+                                                topCategories[_selectedIndex]
+                                                    .fetchedProducts
+                                                    .totalPages,
                                       )
                                     : SizedBox.shrink(),
                                 SizedBox(
@@ -403,15 +437,24 @@ class _ProductsTabState extends State<ProductsTab> {
                                               : Palette.midBlue,
                                         ),
                                         onPressed: () async {
-                                          model.getCurrentProducts(
-                                            pageNumber:
-                                                topCategories[_selectedIndex]
-                                                        .currentPage +
-                                                    1,
-                                            categoryId:
-                                                topCategories[_selectedIndex]
-                                                    .id,
-                                          );
+                                          model.getTopCategoryCurrentProducts(
+                                              selectedIndex: _selectedIndex,
+                                              categoryId:
+                                                  topCategories[_selectedIndex]
+                                                      .id,
+                                              pageNamber:
+                                                  topCategories[_selectedIndex]
+                                                          .currentPage +
+                                                      1);
+                                          // model.getCurrentProducts(
+                                          //   pageNumber:
+                                          //       topCategories[_selectedIndex]
+                                          //               .currentPage +
+                                          //           1,
+                                          //   categoryId:
+                                          //       topCategories[_selectedIndex]
+                                          //           .id,
+                                          // );
                                           setState(() {
                                             topCategories[_selectedIndex]
                                                 .currentPage += 1;

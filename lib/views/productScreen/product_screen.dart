@@ -3,12 +3,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:qarinli/config/Palette.dart';
 import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/models/product.dart';
+import 'package:qarinli/views/productScreen/widgets/review/Reviews_card.dart';
 import 'package:qarinli/views/productScreen/widgets/best_price.dart';
 import 'package:qarinli/views/productScreen/widgets/offers_prices.dart';
 import 'package:qarinli/views/productScreen/widgets/related_products_slider.dart';
@@ -95,18 +95,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             builder: (BuildContext context) {
                               return Container(
                                 child: image != null
-                                    ?
-                                    //  Image.network(
-                                    //     image,
-                                    //     width:
-                                    // MediaQuery.of(context).size.width >
-                                    //         600
-                                    //     ? 400
-                                    //     : 150,
-                                    //     fit: BoxFit.contain,
-                                    //   )
-
-                                    FadeInImage(
+                                    ? FadeInImage(
                                         fit: BoxFit.contain,
                                         image: CachedNetworkImageProvider(
                                           image,
@@ -211,19 +200,6 @@ class _ProductScreenState extends State<ProductScreen> {
                           },
                         ),
                       ),
-                      // Container(
-                      //   // width: 8.0,
-                      //   child: IconButton(
-                      //     color: theme == AppTheme.LIGHT
-                      //         ? Colors.black
-                      //         : Palette.yellow,
-                      //     padding: EdgeInsets.all(0),
-                      //     icon: Icon(Icons.alarm_outlined),
-                      //     onPressed: () {
-
-                      //     },
-                      //   ),
-                      // )
                     ],
                   ),
                 ),
@@ -384,41 +360,6 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 15, right: 10),
-              // padding: EdgeInsets.all(10.0),
-              child: Text(
-                // 'User Reviews',
-                'تقييمات المستخدم',
-                textDirection: TextDirection.rtl,
-                style: TextStyle(
-                  fontSize: 24.0,
-                ),
-              ),
-            ),
-            // Container(
-            //   margin: EdgeInsets.only(right: 10),
-            //   child: Text(
-            //     'How many stars would you give this product?',
-            //     style: TextStyle(
-            //       fontSize: 16.0,
-            //     ),
-            //   ),
-            // ),
-            Center(
-              child: RatingBarIndicator(
-                rating: double.parse(widget.product.reviews.averageRating),
-                direction: Axis.horizontal,
-                unratedColor:
-                    theme == AppTheme.LIGHT ? Colors.black : Colors.white,
-                itemBuilder: (context, index) => Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                itemCount: 5,
-                itemSize: 42,
-              ),
-            ),
             widget.product.youtubeVideos.length > 0
                 ? Container(
                     margin: EdgeInsets.only(top: 15, right: 10),
@@ -502,6 +443,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     }),
                   )
                 : SizedBox.shrink(),
+            ReviewsCard(product: widget.product),
             !model.relatedProductsIsLoading && model.relatedProducts.length > 0
                 ? Container(
                     margin: EdgeInsets.only(top: 15, right: 10),

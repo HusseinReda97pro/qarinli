@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qarinli/config/Palette.dart';
 
-void showAlertMessage({context, title, message}) {
+void showAlertMessage(
+    {@required BuildContext context,
+    @required String title,
+    @required Widget message}) {
   showDialog(
       context: context,
       builder: (BuildContext context) {

@@ -6,7 +6,6 @@ import 'package:qarinli/config/category_ids.dart';
 import 'package:qarinli/models/fetchedProducts.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:http/http.dart' as http;
-import 'package:qarinli/models/reviews.dart';
 import 'package:qarinli/models/shop.dart';
 import 'package:qarinli/models/youtube_video.dart';
 
@@ -32,39 +31,39 @@ class ProductsController {
         http.Response response_2;
         if (favorites != null) {
           response = await http.get(
-              'https://www.qarinli.com/wp-json/wc/v3/products?include=$favorites',
+              'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&include=$favorites',
               headers: <String, String>{'authorization': basicAuth});
         } else {
           if (topSales) {
             response = await http.get(
-                'https://www.qarinli.com/wp-json/wc/v3/products?tag=$COMPARISON_TAG_ID&min_price=200&max_price=400',
+                'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&tag=$COMPARISON_TAG_ID&min_price=200&max_price=400',
                 headers: <String, String>{'authorization': basicAuth});
           } else {
             if (search != null) {
               response = await http.get(
-                  'https://www.qarinli.com/wp-json/wc/v3/products?search=$search&status=publish&post_type=product&page=$page',
+                  'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&search=$search&status=publish&post_type=product&page=$page',
                   headers: <String, String>{'authorization': basicAuth});
             } else {
               if (comparison) {
                 response = await http.get(
-                    'https://www.qarinli.com/wp-json/wc/v3/products?tag=$COMPARISON_TAG_ID&page=$page',
+                    'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&tag=$COMPARISON_TAG_ID&page=$page',
                     headers: <String, String>{'authorization': basicAuth});
               } else {
                 if (choosen) {
                   response = await http.get(
-                      'https://www.qarinli.com/wp-json/wc/v3/products?featured=true',
+                      'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&featured=true',
                       headers: <String, String>{'authorization': basicAuth});
                 } else {
                   if (moda) {
                     response = await http.get(
-                        'https://www.qarinli.com/wp-json/wc/v3/products?category=$categoryId&featured=true&page=$page',
+                        'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&category=$categoryId&featured=true&page=$page',
                         headers: <String, String>{'authorization': basicAuth});
                     response_2 = await http.get(
-                        'https://www.qarinli.com/wp-json/wc/v3/products?category=797&per_page=7',
+                        'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&category=797&per_page=7',
                         headers: <String, String>{'authorization': basicAuth});
                   } else {
                     response = await http.get(
-                        'https://www.qarinli.com/wp-json/wc/v3/products?page=$page&category=$categoryId',
+                        'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&page=$page&category=$categoryId',
                         headers: <String, String>{'authorization': basicAuth});
                   }
                 }
@@ -123,7 +122,16 @@ class ProductsController {
           List<YoutubeVideo> youtubeVideos =
               getYutubeVideos(metaData: metaData);
           List<String> images = getGoogleImages(metaData: metaData);
-          Reviews reviews = getReviews(productData: product);
+          String averageRating;
+          int ratingCount;
+          try {
+            averageRating = product['average_rating'];
+            ratingCount = product['rating_count'];
+          } catch (e) {
+            averageRating = '0';
+            ratingCount = 0;
+          }
+
           // print(product['related_ids']);
           List<dynamic> relatedIds = product['related_ids'];
           // dynamic historOfPricesHTML =
@@ -148,7 +156,8 @@ class ProductsController {
               shops: shops,
               youtubeVideos: youtubeVideos,
               images: images,
-              reviews: reviews,
+              reviewAverageRating: averageRating,
+              reviewRatingCount: ratingCount,
               relatedIds: relatedIds,
               bestPriceURL: bestPriceURL
               // historOfPricesHTML: historOfPricesHTML
@@ -166,6 +175,87 @@ class ProductsController {
     }
     return FetchedProducts(
         products: products, totalPages: totalPages, totalResults: totalResults);
+  }
+
+  Future<List<Product>> getRelatedProducts({relatedIds}) async {
+    List<Product> products = [];
+    try {
+      var productsData;
+      try {
+        http.Response response;
+
+        response = await http.get(
+            'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&include=$relatedIds',
+            headers: <String, String>{'authorization': basicAuth});
+
+        var responseBody = await json.decode(response.body);
+
+        if (responseBody is List<dynamic> || responseBody['message'] == null) {
+          productsData = responseBody;
+        } else {
+          return [];
+        }
+      } on SocketException {
+        throw Exception('No Internet connection.');
+      }
+
+      for (var product in productsData) {
+        try {
+          var metaData = product['meta_data'];
+          String imageURL =
+              getMainImage(metaData: metaData, images: product['images']);
+          if (imageURL == null) {
+            imageURL = getMainImage(
+                metaData: metaData,
+                images: product['images'],
+                withoutOffers: true);
+          }
+
+          List<Shop> shops = getShopsOffers(metaData: metaData);
+          List<YoutubeVideo> youtubeVideos =
+              getYutubeVideos(metaData: metaData);
+          List<String> images = getGoogleImages(metaData: metaData);
+          String averageRating;
+          int ratingCount;
+          try {
+            averageRating = product['average_rating'];
+            ratingCount = product['rating_count'];
+          } catch (e) {
+            averageRating = '0';
+            ratingCount = 0;
+          } // print(product['related_ids']);
+          List<dynamic> relatedIds = product['related_ids'];
+          // dynamic historOfPricesHTML =
+          //     await getHistorOfPricesHTML(product['permalink']);
+          String bestPriceURL = product['external_url'];
+          if (bestPriceURL.isEmpty && shops.length > 0) {
+            bestPriceURL = getCheapestPrice(shops).offerLink;
+          }
+          if (imageURL == null) {
+            imageURL = images[0];
+          }
+          // print(shops);
+          products.add(Product(
+              id: product['id'],
+              link: product['permalink'],
+              name: product['name'],
+              price: product['price'],
+              imageUrl: imageURL,
+              description: product['description'],
+              shortDescription: product['short_description'],
+              shops: shops,
+              youtubeVideos: youtubeVideos,
+              images: images,
+              reviewAverageRating: averageRating,
+              reviewRatingCount: ratingCount,
+              relatedIds: relatedIds,
+              bestPriceURL: bestPriceURL
+              // historOfPricesHTML: historOfPricesHTML
+              ));
+        } catch (e) {}
+      }
+    } catch (e) {}
+    return products;
   }
 
   // get single product
@@ -205,7 +295,15 @@ class ProductsController {
       List<Shop> shops = getShopsOffers(metaData: metaData);
       List<YoutubeVideo> youtubeVideos = getYutubeVideos(metaData: metaData);
       List<String> images = getGoogleImages(metaData: metaData);
-      Reviews reviews = getReviews(productData: product);
+      String averageRating;
+      int ratingCount;
+      try {
+        averageRating = productData['average_rating'];
+        ratingCount = productData['rating_count'];
+      } catch (e) {
+        averageRating = '0';
+        ratingCount = 0;
+      }
       List<dynamic> relatedIds = productData['related_ids'];
       // dynamic historOfPricesHTML =
       //     await getHistorOfPricesHTML(productData['permalink']);
@@ -224,7 +322,8 @@ class ProductsController {
           shops: shops,
           youtubeVideos: youtubeVideos,
           images: images,
-          reviews: reviews,
+          reviewAverageRating: averageRating,
+          reviewRatingCount: ratingCount,
           relatedIds: relatedIds,
           bestPriceURL: bestPriceURL
 
@@ -312,22 +411,6 @@ class ProductsController {
       // print('outter  2 :' + e.toString());
     }
     return images;
-  }
-
-  // Reviews
-  Reviews getReviews({productData}) {
-    Reviews reviews;
-    try {
-      reviews = Reviews(
-          averageRating: productData['average_rating'],
-          ratingCount: productData['rating_count']);
-    } catch (e) {
-      // print('outter  3' + e.toString());
-      reviews = Reviews(averageRating: '0', ratingCount: 0);
-    }
-    return reviews != null
-        ? reviews
-        : Reviews(averageRating: '0', ratingCount: 0);
   }
 
   // Future<dynamic> getHistorOfPricesHTML(String productLink) async {

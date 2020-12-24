@@ -75,8 +75,8 @@ class UnLogedinUser extends StatelessWidget {
               ],
             ),
           )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        : ListView(
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
                 margin: EdgeInsets.symmetric(

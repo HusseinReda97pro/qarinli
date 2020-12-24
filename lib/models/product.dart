@@ -1,4 +1,3 @@
-import 'package:qarinli/models/reviews.dart';
 import 'package:qarinli/models/shop.dart';
 import 'package:qarinli/models/youtube_video.dart';
 
@@ -14,7 +13,8 @@ class Product {
   final String bestPriceURL;
   final List<YoutubeVideo> youtubeVideos;
   final List<String> images;
-  final Reviews reviews;
+  final String reviewAverageRating;
+  final int reviewRatingCount;
   final List<dynamic> relatedIds;
   // final dynamic historOfPricesHTML;
 
@@ -30,7 +30,8 @@ class Product {
     this.bestPriceURL,
     this.youtubeVideos,
     this.images,
-    this.reviews,
+    this.reviewAverageRating,
+    this.reviewRatingCount,
     this.relatedIds,
     // this.historOfPricesHTML
   });

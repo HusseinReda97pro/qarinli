@@ -94,7 +94,9 @@ class _ModaOffersScreenState extends State<ModaOffersScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
-                            return ProductsScreen();
+                            return ProductsScreen(
+                              categoryId: 799,
+                            );
                           },
                         ),
                       );
@@ -127,7 +129,7 @@ class _ModaOffersScreenState extends State<ModaOffersScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
-                            return ProductsScreen();
+                            return ProductsScreen(categoryId: 798);
                           },
                         ),
                       );

@@ -176,25 +176,27 @@ mixin ProductModel on ChangeNotifier {
   // for product screen
   List<Product> relatedProducts = [];
   bool relatedProductsIsLoading = false;
+
   void getRelatedProducts(relatedIds) async {
-    // print('enter getrelateds');
     relatedProductsIsLoading = true;
     notifyListeners();
     relatedProducts.clear();
+    String related = '';
+
     try {
       for (var id in relatedIds) {
-        var product =
-            await productsController.getProduct(productId: id.toString());
-        relatedProducts.add(product);
+        try {
+          related += id.toString() + ',';
+        } catch (_) {}
       }
+      relatedProducts =
+          await productsController.getRelatedProducts(relatedIds: related);
     } catch (e) {
-      // print('get product error');
-      // print(e.toString());
+      print(e);
     }
     relatedProductsIsLoading = false;
     notifyListeners();
-    // print('exit get relateds');
-    // print('related length: ' + relatedProducts.length.toString());
+    print(relatedProducts.length);
   }
 
   // for top categories screen

@@ -4,6 +4,7 @@ import 'package:qarinli/config/Palette.dart';
 import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/views/ProductsScreen/widgets/product_card.dart';
+import 'package:qarinli/views/ProductsScreen/widgets/filter_sheet.dart';
 import 'package:qarinli/views/widgets/app_drawer/app_drawer.dart';
 import 'package:qarinli/views/widgets/appbar.dart';
 import 'package:qarinli/views/widgets/rounded_button.dart';
@@ -32,11 +33,22 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   int _currentPageNamber = 1;
+
+  void displayFlitterBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        // isScrollControlled: true,
+        builder: (ctx) {
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            child: Center(child: FilterSheet()),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<MainModel>(builder: (context, model, chlild) {
-      // print('test');
-      // print(model.currentProductsIsLoading);
       return Scaffold(
         appBar: MainAppBar(context: context),
         endDrawer: AppDrawer(),
@@ -44,9 +56,35 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ? Spinner()
             : model.currentProducts.length > 0
                 ? ListView.builder(
-                    itemCount: model.currentProducts.length + 2,
+                    itemCount: model.currentProducts.length + 3,
                     itemBuilder: (context, index) {
                       if (index == 0) {
+                        return Row(
+                          children: [
+                            Expanded(child: SizedBox()),
+                            Container(
+                              width: 120,
+                              margin: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: RaisedButton(
+                                color: AppThemeModel.isLight()
+                                    ? Palette.midBlue
+                                    : Colors.white,
+                                onPressed: () {
+                                  displayFlitterBottomSheet(context);
+                                },
+                                child: Text(
+                                  'تصفية المنتجات',
+                                  style: TextStyle(
+                                      color: AppThemeModel.isLight()
+                                          ? Colors.white
+                                          : Palette.midBlue),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      if (index == 1) {
                         return Directionality(
                           textDirection: TextDirection.rtl,
                           child: Container(
@@ -62,9 +100,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           ),
                         );
                       }
-                      if (index < model.currentProducts.length + 1) {
+                      if (index < model.currentProducts.length + 2) {
                         return ProductCard(
-                            product: model.currentProducts[index - 1]);
+                            product: model.currentProducts[index - 2]);
                       } else {
                         return Container(
                           margin: EdgeInsets.symmetric(horizontal: 20),
