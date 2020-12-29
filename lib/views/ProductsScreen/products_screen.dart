@@ -4,29 +4,13 @@ import 'package:qarinli/config/Palette.dart';
 import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/views/ProductsScreen/widgets/product_card.dart';
-import 'package:qarinli/views/ProductsScreen/widgets/filter_sheet.dart';
+import 'package:qarinli/views/ProductsScreen/widgets/filter/filter_sheet.dart';
 import 'package:qarinli/views/widgets/app_drawer/app_drawer.dart';
 import 'package:qarinli/views/widgets/appbar.dart';
 import 'package:qarinli/views/widgets/rounded_button.dart';
 import 'package:qarinli/views/widgets/spinner.dart';
 
 class ProductsScreen extends StatefulWidget {
-  final int categoryId;
-  final bool withoutOffers;
-  final bool comparison;
-  final bool choosen;
-  final bool moda;
-  final String search;
-  final bool topSales;
-
-  ProductsScreen(
-      {this.categoryId,
-      this.withoutOffers,
-      this.choosen = false,
-      this.moda = false,
-      this.comparison = false,
-      this.search,
-      this.topSales = false});
   @override
   _ProductsScreenState createState() => _ProductsScreenState();
 }
@@ -37,7 +21,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
   void displayFlitterBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
-        // isScrollControlled: true,
         builder: (ctx) {
           return Container(
             height: MediaQuery.of(context).size.height,
@@ -132,14 +115,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                           model.getCurrentProducts(
                                               pageNumber:
                                                   _currentPageNamber - 1,
-                                              categoryId: widget.categoryId,
-                                              withoutOffers:
-                                                  widget.withoutOffers,
-                                              comparison: widget.comparison,
-                                              choosen: widget.choosen,
-                                              moda: widget.moda,
-                                              search: widget.search,
-                                              topSales: widget.topSales);
+                                              filter: model.currentFilter);
                                           setState(() {
                                             _currentPageNamber -= 1;
                                           });
@@ -153,13 +129,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 onPressed: () async {
                                   model.getCurrentProducts(
                                       pageNumber: 1,
-                                      categoryId: widget.categoryId,
-                                      withoutOffers: widget.withoutOffers,
-                                      comparison: widget.comparison,
-                                      choosen: widget.choosen,
-                                      moda: widget.moda,
-                                      search: widget.search,
-                                      topSales: widget.topSales);
+                                      filter: model.currentFilter);
                                   setState(() {
                                     _currentPageNamber = 1;
                                   });
@@ -196,17 +166,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                   onPressed: () async {
                                                     model.getCurrentProducts(
                                                         pageNumber: (index + 2),
-                                                        categoryId:
-                                                            widget.categoryId,
-                                                        withoutOffers: widget
-                                                            .withoutOffers,
-                                                        comparison:
-                                                            widget.comparison,
-                                                        choosen: widget.choosen,
-                                                        moda: widget.moda,
-                                                        search: widget.search,
-                                                        topSales:
-                                                            widget.topSales);
+                                                        filter: model
+                                                            .currentFilter);
                                                     setState(() {
                                                       _currentPageNamber =
                                                           (index + 2);
@@ -230,13 +191,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                       onPressed: () async {
                                         model.getCurrentProducts(
                                             pageNumber: model.currentTotalpages,
-                                            categoryId: widget.categoryId,
-                                            withoutOffers: widget.withoutOffers,
-                                            comparison: widget.comparison,
-                                            choosen: widget.choosen,
-                                            moda: widget.moda,
-                                            search: widget.search,
-                                            topSales: widget.topSales);
+                                            filter: model.currentFilter);
                                         setState(() {
                                           _currentPageNamber =
                                               model.currentTotalpages;
@@ -271,13 +226,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                       onPressed: () async {
                                         model.getCurrentProducts(
                                             pageNumber: _currentPageNamber + 1,
-                                            categoryId: widget.categoryId,
-                                            withoutOffers: widget.withoutOffers,
-                                            comparison: widget.comparison,
-                                            choosen: widget.choosen,
-                                            moda: widget.moda,
-                                            search: widget.search,
-                                            topSales: widget.topSales);
+                                            filter: model.currentFilter);
                                         setState(() {
                                           _currentPageNamber += 1;
                                         });

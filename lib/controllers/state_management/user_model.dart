@@ -99,14 +99,20 @@ mixin UserModel on ChangeNotifier {
     }
   }
 
-  Future<void> logout() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    currentUser = null;
-    prefs.remove('email');
-    prefs.remove('username');
-    prefs.remove('password');
-    prefs.remove('id');
-    prefs.remove('token');
+  Future<bool> logout() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      currentUser = null;
+      prefs.remove('email');
+      prefs.remove('username');
+      prefs.remove('password');
+      prefs.remove('id');
+      prefs.remove('token');
+      notifyListeners();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<bool> addFavorite({@required productId}) async {
@@ -188,25 +194,17 @@ mixin UserModel on ChangeNotifier {
   List<int> getFavorites(metaData) {
     List<int> favs = [];
     try {
-      print('enter get favs');
       var favsData = metaData
           .toList()
           .firstWhere((data) => data['key'] == '_wished_posts');
-      print(favsData);
-      print('_________________');
-      print(favsData['value']);
       if (favsData != null) {
         for (var fav in favsData['value'].values.toList()) {
           try {
             favs.add(fav);
-          } catch (e) {}
+          } catch (_) {}
         }
       }
-    } catch (e) {
-      print('favs error');
-      print(e);
-    }
-    print(favs);
+    } catch (_) {}
     return favs;
   }
 }

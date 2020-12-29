@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:qarinli/config/Palette.dart';
 import 'package:qarinli/config/theme.dart';
@@ -18,6 +19,7 @@ import 'package:qarinli/views/widgets/alert_message.dart';
 import 'package:qarinli/views/widgets/app_drawer/app_drawer.dart';
 import 'package:qarinli/views/widgets/appbar.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:qarinli/views/widgets/full_screen_image.dart';
 import 'package:share/share.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -93,19 +95,46 @@ class _ProductScreenState extends State<ProductScreen> {
                         items: widget.product.images.map((image) {
                           return Builder(
                             builder: (BuildContext context) {
-                              return Container(
-                                child: image != null
-                                    ? FadeInImage(
-                                        fit: BoxFit.contain,
-                                        image: CachedNetworkImageProvider(
-                                          image,
-                                        ),
-                                        placeholder: AssetImage(
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (_) {
+                                    return FullScreenImage(
+                                      imageUrl: image,
+                                      tag: "generate_a_unique_tag",
+                                    );
+                                  }));
+                                },
+                                child: Hero(
+                                  child: Container(
+                                    child: image != null
+                                        ? FadeInImage(
+                                            fit: BoxFit.contain,
+                                            image: CachedNetworkImageProvider(
+                                              image,
+                                            ),
+                                            placeholder: AssetImage(
+                                                'assets/placeholder_image.png'),
+                                          )
+                                        : Image.asset(
                                             'assets/placeholder_image.png'),
-                                      )
-                                    : Image.asset(
-                                        'assets/placeholder_image.png'),
+                                  ),
+                                  tag: "generate_a_unique_tag",
+                                ),
                               );
+                              //  Container(
+                              //   child: image != null
+                              //       ? FadeInImage(
+                              //           fit: BoxFit.contain,
+                              //           image: CachedNetworkImageProvider(
+                              //             image,
+                              //           ),
+                              //           placeholder: AssetImage(
+                              //               'assets/placeholder_image.png'),
+                              //         )
+                              //       : Image.asset(
+                              //           'assets/placeholder_image.png'),
+                              // );
                             },
                           );
                         }).toList(),
@@ -301,65 +330,66 @@ class _ProductScreenState extends State<ProductScreen> {
               textDirection: TextDirection.rtl,
               child: Html(data: widget.product.description),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 15),
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                // 'Product Specifications',
-                'مقارنة المنتج',
-                textDirection: TextDirection.rtl,
-                style: TextStyle(
-                  fontSize: 24.0,
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.0),
-              child: Card(
-                color: Palette.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                  side: BorderSide(color: Palette.midBlue, width: 2.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.all(10.0),
-                        width: MediaQuery.of(context).size.width * 0.85,
-                        child: Text(
-                          // 'compare this product with others',
-                          'قارن هذا المنتج مع منتجات أخرى',
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(fontSize: 18.0, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.85,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side:
-                                BorderSide(color: Palette.midBlue, width: 2.0),
-                          ),
-                          color: Colors.white,
-                          onPressed: () {},
-                          child: Text(
-                            // 'Compare',
-                            'مقارنة',
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
+            //TODO compare
+            // Container(
+            //   margin: EdgeInsets.only(top: 15),
+            //   padding: EdgeInsets.all(10.0),
+            //   child: Text(
+            //     // 'Product Specifications',
+            //     'مقارنة المنتج',
+            //     textDirection: TextDirection.rtl,
+            //     style: TextStyle(
+            //       fontSize: 24.0,
+            //     ),
+            //   ),
+            // ),
+            // Container(
+            //   margin: EdgeInsets.symmetric(horizontal: 10.0),
+            //   child: Card(
+            //     color: Palette.grey,
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(6.0),
+            //       side: BorderSide(color: Palette.midBlue, width: 2.0),
+            //     ),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Center(
+            //           child: Container(
+            //             margin: EdgeInsets.all(10.0),
+            //             width: MediaQuery.of(context).size.width * 0.85,
+            //             child: Text(
+            //               // 'compare this product with others',
+            //               'قارن هذا المنتج مع منتجات أخرى',
+            //               textDirection: TextDirection.rtl,
+            //               style: TextStyle(fontSize: 18.0, color: Colors.white),
+            //             ),
+            //           ),
+            //         ),
+            //         Center(
+            //           child: Container(
+            //             width: MediaQuery.of(context).size.width * 0.85,
+            //             child: RaisedButton(
+            //               shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(18.0),
+            //                 side:
+            //                     BorderSide(color: Palette.midBlue, width: 2.0),
+            //               ),
+            //               color: Colors.white,
+            //               onPressed: () {},
+            //               child: Text(
+            //                 // 'Compare',
+            //                 'مقارنة',
+            //                 textDirection: TextDirection.rtl,
+            //                 style: TextStyle(color: Colors.black),
+            //               ),
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
             widget.product.youtubeVideos.length > 0
                 ? Container(
                     margin: EdgeInsets.only(top: 15, right: 10),

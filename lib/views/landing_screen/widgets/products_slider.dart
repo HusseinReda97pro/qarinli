@@ -8,23 +8,18 @@ import 'Product_card_landing_screen.dart';
 class ProductsSlider extends StatelessWidget {
   final bool isLoading;
   final List<Product> products;
-  final int categoryId;
-  final bool withoutOffers;
-  final TextDirection textDirection;
 
-  const ProductsSlider(
-      {@required this.isLoading,
-      @required this.products,
-      this.categoryId,
-      this.withoutOffers,
-      this.textDirection = TextDirection.rtl});
+  const ProductsSlider({
+    @required this.isLoading,
+    @required this.products,
+  });
 
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? ProgressIndicatorV2()
         : Directionality(
-            textDirection: textDirection,
+            textDirection: TextDirection.rtl,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(

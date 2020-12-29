@@ -38,9 +38,9 @@ class RelatedProductCard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              width: 70,
+              width: 140,
               height: 110,
-              margin: EdgeInsets.all(10.0),
+              // margin: EdgeInsets.all(10.0),
               child: product.imageUrl != null
                   ? FadeInImage(
                       image: CachedNetworkImageProvider(product.imageUrl),
@@ -50,8 +50,8 @@ class RelatedProductCard extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
-              width: 110,
-              height: 60,
+              width: 120,
+              height: 75,
               child: Text(
                 product.name,
                 textDirection: TextDirection.rtl,

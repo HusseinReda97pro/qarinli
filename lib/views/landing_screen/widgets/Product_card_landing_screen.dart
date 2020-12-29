@@ -46,9 +46,9 @@ class ProductCard extends StatelessWidget {
                   child: product.imageUrl != null
                       ? Image.network(
                           product.imageUrl,
-                          height: 110,
-                          width: 140,
-                          fit: BoxFit.fill,
+                          // height: 110,
+                          // width: 140,
+                          // fit: BoxFit.fill,
                         )
                       // FadeInImage(
                       //     image: CachedNetworkImageProvider(product.imageUrl),

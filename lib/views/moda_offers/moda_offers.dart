@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:qarinli/config/top_categories.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/models/blog.dart';
+import 'package:qarinli/models/category.dart';
+import 'package:qarinli/models/filter.dart';
 import 'package:qarinli/views/ProductsScreen/products_screen.dart';
 import 'package:qarinli/views/blog_screen/blog_screen.dart';
-import 'package:qarinli/views/moda_offers/kids_screen.dart';
 import 'package:qarinli/views/moda_offers/widgets/moda_category_card.dart';
 import 'package:qarinli/views/sub_category_screen/sub_category_screen.dart';
 import 'package:qarinli/views/widgets/app_drawer/app_drawer.dart';
@@ -57,11 +57,25 @@ class _ModaOffersScreenState extends State<ModaOffersScreen> {
                       //   pageNumber: 1,
                       //   categoryId: 799,
                       // );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (BuildContext context) {
+                      //       return KidsScrren();
+                      //     },
+                      //   ),
+                      // );
+                      model.getCurrentProducts(
+                        pageNumber: 1,
+                        filter: Filter(tags: [], categories: [
+                          Category(id: 2163, name: 'أزياء الأطفال')
+                        ]),
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
-                            return KidsScrren();
+                            return ProductsScreen();
                           },
                         ),
                       );
@@ -88,15 +102,15 @@ class _ModaOffersScreenState extends State<ModaOffersScreen> {
                     onTap: () {
                       model.getCurrentProducts(
                         pageNumber: 1,
-                        categoryId: 799,
+                        filter: Filter(tags: [], categories: [
+                          Category(id: 799, name: 'أزياء المرأه')
+                        ]),
                       );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
-                            return ProductsScreen(
-                              categoryId: 799,
-                            );
+                            return ProductsScreen();
                           },
                         ),
                       );
@@ -123,13 +137,15 @@ class _ModaOffersScreenState extends State<ModaOffersScreen> {
                     onTap: () {
                       model.getCurrentProducts(
                         pageNumber: 1,
-                        categoryId: 798,
+                        filter: Filter(tags: [], categories: [
+                          Category(id: 798, name: 'أزياء الرجل')
+                        ]),
                       );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
-                            return ProductsScreen(categoryId: 798);
+                            return ProductsScreen();
                           },
                         ),
                       );
@@ -154,7 +170,7 @@ class _ModaOffersScreenState extends State<ModaOffersScreen> {
                   )
                 ],
               ),
-              topCategories[6].subCategories != null
+              model.modaSubCategories.length > 0
                   ? Container(
                       margin: EdgeInsets.only(right: 15, top: 15.0),
                       child: Text(
@@ -165,52 +181,56 @@ class _ModaOffersScreenState extends State<ModaOffersScreen> {
                       ),
                     )
                   : SizedBox.shrink(),
-              topCategories[6].subCategories != null
-                  ? Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Container(
-                          margin: EdgeInsets.only(right: 20),
-                          child: RowBuilder(
-                            itemCount: topCategories.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      model.currentCategory =
-                                          topCategories[6].subCategories[index];
-                                      model.getCurrentProducts(
-                                        pageNumber: 1,
-                                        categoryId: topCategories[6]
-                                            .subCategories[index]
-                                            .id,
-                                      );
-                                      model.getSubCategories();
+              model.modaSubCategoriesIsloading
+                  ? Spinner()
+                  : model.modaSubCategories.length > 0
+                      ? Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Container(
+                              margin: EdgeInsets.only(right: 20),
+                              child: RowBuilder(
+                                itemCount: model.modaSubCategories.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          model.currentCategory =
+                                              model.modaSubCategories[index];
+                                          model.getCurrentProducts(
+                                            pageNumber: 1,
+                                            filter: Filter(
+                                                tags: [],
+                                                categories: [
+                                                  model.modaSubCategories[index]
+                                                ]),
+                                          );
+                                          model.getSubCategories();
 
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) {
-                                            return SubCategoryScreen();
-                                          },
-                                        ),
-                                      );
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                                return SubCategoryScreen();
+                                              },
+                                            ),
+                                          );
 
-                                      _selectedIndex = index;
-                                    });
-                                  },
-                                  child: ModaCategoryCard(
-                                    category:
-                                        topCategories[6].subCategories[index],
-                                    isSelected: _selectedIndex == index,
-                                  ));
-                            },
+                                          _selectedIndex = index;
+                                        });
+                                      },
+                                      child: ModaCategoryCard(
+                                        category:
+                                            model.modaSubCategories[index],
+                                        isSelected: _selectedIndex == index,
+                                      ));
+                                },
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  : Spinner(),
+                        )
+                      : Spinner(),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15.0),
                 child: Center(

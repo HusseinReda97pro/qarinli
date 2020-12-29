@@ -4,6 +4,7 @@ import 'package:qarinli/config/Palette.dart';
 import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/config/top_categories.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
+import 'package:qarinli/models/filter.dart';
 import 'package:qarinli/views/ProductsScreen/widgets/product_card.dart';
 import 'package:qarinli/views/top_categories/widgets/sub_category_card.dart';
 import 'package:qarinli/views/widgets/app_drawer/app_drawer.dart';
@@ -128,11 +129,13 @@ class _KidsScrrenState extends State<KidsScrren> {
                                             if (topCategories[7].currentPage >
                                                 1) {
                                               model.getCurrentProducts(
-                                                  pageNumber: topCategories[7]
-                                                          .currentPage -
-                                                      1,
-                                                  categoryId:
-                                                      topCategories[7].id);
+                                                pageNumber: topCategories[7]
+                                                        .currentPage -
+                                                    1,
+                                                filter: Filter(categories: [
+                                                  topCategories[7]
+                                                ], tags: []),
+                                              );
                                               setState(() {
                                                 topCategories[7].currentPage -=
                                                     1;
@@ -147,7 +150,9 @@ class _KidsScrrenState extends State<KidsScrren> {
                                     onPressed: () async {
                                       model.getCurrentProducts(
                                         pageNumber: 1,
-                                        categoryId: topCategories[7].id,
+                                        filter: Filter(
+                                            tags: [],
+                                            categories: [topCategories[7]]),
                                       );
                                       setState(() {
                                         topCategories[7].currentPage = 1;
@@ -196,9 +201,11 @@ class _KidsScrrenState extends State<KidsScrren> {
                                                             .getCurrentProducts(
                                                           pageNumber:
                                                               (index + 2),
-                                                          categoryId:
-                                                              topCategories[7]
-                                                                  .id,
+                                                          filter: Filter(
+                                                              tags: [],
+                                                              categories: [
+                                                                topCategories[7]
+                                                              ]),
                                                         );
                                                         setState(() {
                                                           topCategories[7]
@@ -228,8 +235,11 @@ class _KidsScrrenState extends State<KidsScrren> {
                                             model.getCurrentProducts(
                                               pageNumber:
                                                   model.currentTotalpages,
-                                              categoryId:
-                                                  topCategories[7].currentPage,
+                                              filter: Filter(
+                                                  tags: [],
+                                                  categories: [
+                                                    topCategories[7]
+                                                  ]),
                                             );
                                             setState(() {
                                               topCategories[7].currentPage =
@@ -276,7 +286,9 @@ class _KidsScrrenState extends State<KidsScrren> {
                                               pageNumber:
                                                   topCategories[7].currentPage +
                                                       1,
-                                              categoryId: topCategories[7].id,
+                                              filter: Filter(categories: [
+                                                topCategories[7]
+                                              ], tags: []),
                                             );
                                             setState(() {
                                               topCategories[7].currentPage += 1;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qarinli/config/category_ids.dart';
+import 'package:qarinli/config/landing_categories.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/views/Favorites/favorites_scerren.dart';
 import 'package:qarinli/views/auth/login_screen.dart';
@@ -10,8 +10,8 @@ import 'package:qarinli/views/info/rules.dart';
 import 'package:qarinli/views/landing_screen/landing_screen.dart';
 import 'package:qarinli/views/moda_offers/moda_offers.dart';
 import 'package:qarinli/views/settings/settings.dart';
-import 'package:qarinli/views/shops/shops.dart';
 import 'package:qarinli/views/top_categories/top_categories_scerren.dart';
+import 'package:qarinli/views/widgets/alert_message.dart';
 import 'package:qarinli/views/widgets/app_drawer/widgets/drawer_tab.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -20,7 +20,6 @@ class AppDrawer extends StatelessWidget {
     return Consumer<MainModel>(builder: (context, model, chlild) {
       return Drawer(
         child: Directionality(
-          // add this
           textDirection: TextDirection.rtl,
           child: ListView(
             children: <Widget>[
@@ -89,7 +88,20 @@ class AppDrawer extends StatelessWidget {
                       title: 'تسجيل الخروج',
                       icon: Icons.person,
                       onTap: () {
-                        model.logout();
+                        model.logout().then((logedout) {
+                          print(logedout);
+                          if (logedout) {
+                            showAlertMessage(
+                                context: context,
+                                title: 'تم بنجاح',
+                                message: Text('تم تسجيل الخروج بنجاح'));
+                          } else {
+                            showAlertMessage(
+                                context: context,
+                                title: 'فشلت العملية',
+                                message: Text('حدث خطأ غير معروفس'));
+                          }
+                        });
                         // Navigator.pushReplacement(
                         //   context,
                         //   MaterialPageRoute(builder: (BuildContext context) {
@@ -148,18 +160,18 @@ class AppDrawer extends StatelessWidget {
               //     );
               //   },
               // ),
-              DrawerTab(
-                title: 'علامات تجارية',
-                icon: Icons.shop_two,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (BuildContext context) {
-                      return ShopsScreen();
-                    }),
-                  );
-                },
-              ),
+              // DrawerTab(
+              //   title: 'علامات تجارية',
+              //   icon: Icons.shop_two,
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (BuildContext context) {
+              //         return ShopsScreen();
+              //       }),
+              //     );
+              //   },
+              // ),
               DrawerTab(
                 title: 'عروض السوبر ماركت',
                 icon: Icons.local_offer_outlined,

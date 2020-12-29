@@ -4,10 +4,12 @@ import 'package:qarinli/controllers/products_controller.dart';
 import 'package:qarinli/models/category.dart';
 import 'package:qarinli/config/top_categories.dart';
 import 'package:qarinli/models/fetchedProducts.dart';
+import 'package:qarinli/models/filter.dart';
 
 mixin CategoryModel on ChangeNotifier {
   Category currentCategory;
   List<Category> currentSubCategories;
+
   CategoryController categoryController = CategoryController();
   ProductsController productsController = ProductsController();
 
@@ -23,10 +25,11 @@ mixin CategoryModel on ChangeNotifier {
     for (Category category in topCategories) {
       category.productsIsLoading = true;
       notifyListeners();
+      Filter filter = Filter(categories: [category], tags: []);
       productsController
           .getProducts(
         page: 1,
-        categoryId: category.id,
+        filter: filter,
       )
           .then((FetchedProducts fetchedProducts) {
         category.fetchedProducts.products = fetchedProducts.products;
@@ -46,16 +49,16 @@ mixin CategoryModel on ChangeNotifier {
   }
 
 // moda offers
-  List<List<Category>> modaSubCategories = [];
+  List<Category> modaSubCategories = [];
   bool modaSubCategoriesIsloading = false;
-  getModaSubCategories(List<Category> cats) async {
+  getModaSubCategories() async {
     modaSubCategoriesIsloading = true;
     notifyListeners();
-    for (Category cat in cats) {
-      List<Category> subCategories =
-          await categoryController.getsubCategories(parentId: cat.id);
-      modaSubCategories.add(subCategories);
-    }
+    modaSubCategories.clear();
+
+    modaSubCategories = await categoryController.getsubCategories(
+        parentId: 797, exclude: '798,799,2163');
+
     modaSubCategoriesIsloading = false;
     notifyListeners();
   }

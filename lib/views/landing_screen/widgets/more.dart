@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
+import 'package:qarinli/models/category.dart';
+import 'package:qarinli/models/filter.dart';
 import 'package:qarinli/views/ProductsScreen/products_screen.dart';
 
 class MoreButton extends StatelessWidget {
-  final int categoryId;
+  final Category category;
   final bool withoutOffers;
-  MoreButton({this.categoryId, this.withoutOffers});
+  MoreButton({this.category, this.withoutOffers});
   @override
   Widget build(BuildContext context) {
     return Consumer<MainModel>(
@@ -20,24 +22,12 @@ class MoreButton extends StatelessWidget {
                   onTap: () async {
                     model.getCurrentProducts(
                         pageNumber: 2,
-                        categoryId: categoryId,
-                        withoutOffers: withoutOffers);
-                    // loading(context, 'looding');
-                    // model.currentProducts.clear();
-                    // model.currentProducts = await model.productsController
-                    //     .getProducts(
-                    //         page: 2,
-                    //         categoryId: categoryId,
-                    //         withoutOffers: withoutOffers);
-                    // Navigator.of(context).pop();
+                        filter: Filter(categories: [category], tags: []));
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return ProductsScreen(
-                            categoryId: categoryId,
-                            withoutOffers: withoutOffers,
-                          );
+                          return ProductsScreen();
                         },
                       ),
                     );
@@ -46,15 +36,7 @@ class MoreButton extends StatelessWidget {
                     Icons.more,
                     size: 24,
                     color: Theme.of(context).primaryColor,
-                  )
-                  // Text(
-                  //   'المزيد',
-                  //   style: TextStyle(
-                  //       color: Theme.of(context).primaryColor,
-                  //       fontSize: 18.0,
-                  //       decoration: TextDecoration.underline),
-                  // ),
-                  ),
+                  )),
             )
           ],
         );

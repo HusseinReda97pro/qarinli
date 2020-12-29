@@ -252,9 +252,8 @@ class _ProductsTabState extends State<ProductsTab> {
                                               1) {
                                             model.getTopCategoryCurrentProducts(
                                                 selectedIndex: _selectedIndex,
-                                                categoryId: topCategories[
-                                                        _selectedIndex]
-                                                    .id,
+                                                category: topCategories[
+                                                    _selectedIndex],
                                                 pageNamber: topCategories[
                                                             _selectedIndex]
                                                         .currentPage -
@@ -281,8 +280,7 @@ class _ProductsTabState extends State<ProductsTab> {
                                   onPressed: () async {
                                     model.getTopCategoryCurrentProducts(
                                         selectedIndex: _selectedIndex,
-                                        categoryId:
-                                            topCategories[_selectedIndex].id,
+                                        category: topCategories[_selectedIndex],
                                         pageNamber: 1);
                                     // model.getCurrentProducts(
                                     //   pageNumber: 1,
@@ -337,9 +335,8 @@ class _ProductsTabState extends State<ProductsTab> {
                                                       model.getTopCategoryCurrentProducts(
                                                           selectedIndex:
                                                               _selectedIndex,
-                                                          categoryId: topCategories[
-                                                                  _selectedIndex]
-                                                              .id,
+                                                          category: topCategories[
+                                                              _selectedIndex],
                                                           pageNamber:
                                                               (index + 2));
                                                       // model.getCurrentProducts(
@@ -378,9 +375,8 @@ class _ProductsTabState extends State<ProductsTab> {
                                         onPressed: () async {
                                           model.getTopCategoryCurrentProducts(
                                               selectedIndex: _selectedIndex,
-                                              categoryId:
-                                                  topCategories[_selectedIndex]
-                                                      .id,
+                                              category:
+                                                  topCategories[_selectedIndex],
                                               pageNamber:
                                                   topCategories[_selectedIndex]
                                                       .fetchedProducts
@@ -439,9 +435,8 @@ class _ProductsTabState extends State<ProductsTab> {
                                         onPressed: () async {
                                           model.getTopCategoryCurrentProducts(
                                               selectedIndex: _selectedIndex,
-                                              categoryId:
-                                                  topCategories[_selectedIndex]
-                                                      .id,
+                                              category:
+                                                  topCategories[_selectedIndex],
                                               pageNamber:
                                                   topCategories[_selectedIndex]
                                                           .currentPage +

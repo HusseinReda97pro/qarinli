@@ -9,6 +9,7 @@ class Category {
   FetchedProducts fetchedProducts;
   int currentPage;
   bool productsIsLoading;
+  bool isSelected;
   Category(
       {this.id,
       this.name,
@@ -17,5 +18,6 @@ class Category {
       this.count,
       this.fetchedProducts,
       this.currentPage,
-      this.productsIsLoading});
+      this.productsIsLoading,
+      this.isSelected});
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:in_app_review/in_app_review.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -44,135 +43,134 @@ class _MyQarinliTabState extends State<MyQarinliTab> {
             height: 0.5,
             color: Colors.grey,
           ),
-          Stack(
-            children: [
-              Container(
-                color:
-                    theme == AppTheme.LIGHT ? Color(0XFF4D4A4D) : Colors.white,
-                height: 230,
-                padding: EdgeInsets.all(10.0),
-              ),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: Container(
-                  padding: EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      model.currentUser != null
-                          ? Text(
-                              // 'Logged in as',
-                              ' مسجل الدخول كـ ' + model.currentUser.username,
-                              textDirection: TextDirection.rtl,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: theme == AppTheme.LIGHT
-                                      ? Colors.white
-                                      : Colors.black),
-                            )
-                          : Row(
-                              children: <Widget>[
-                                Text(
-                                  'لم تقم بتسجيل الدخول بعد.',
-                                  style: TextStyle(
-                                      color: AppThemeModel.isLight()
-                                          ? Colors.white
-                                          : Colors.black),
-                                ),
-                                SizedBox(
-                                  width: 2.0,
-                                ),
-                                GestureDetector(
-                                  child: Container(
-                                    margin: EdgeInsets.only(right: 3.0),
-                                    child: Text(
-                                      'سجل الدخول الأن',
-                                      style: TextStyle(
-                                          color: Palette.midBlue,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          decoration: TextDecoration.underline),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Navigator.pushNamed(context, '/login');
-                                  },
-                                ),
-                              ],
-                            ),
-                      MyQarinliCard(
-                        // text: 'Notifications',
-                        text: 'الإشعارات',
-                        icon: Icons.alarm,
-                        onTap: () {
-                          //TODO Notifcations
-                        },
-                      ),
-                      MyQarinliCard(
-                        // text: 'Price Alerts'
-                        text: 'تنبيهات الأسعار',
-                        icon: MdiIcons.clockAlertOutline,
-                        onTap: () {
-                          //TODO Price Alerts
-                        },
-                      ),
-                      MyQarinliCard(
-                        // text: 'Settings',
-                        text: 'الإعدادات',
-                        icon: MdiIcons.cogs,
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return Settings();
-                          }));
-                        },
-                      ),
-                      MyQarinliCard(
-                        // text: 'Feedback',
-                        text: 'أخبرنا رأيك',
-                        icon: MdiIcons.commentMultipleOutline,
-                        onTap: () {
-                          //TODO Feedback
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Stack(
+          //   children: [
+          //     Container(
+          //       color:
+          //           theme == AppTheme.LIGHT ? Color(0XFF4D4A4D) : Colors.white,
+          //       height: 230,
+          //       padding: EdgeInsets.all(10.0),
+          //     ),
           Directionality(
             textDirection: TextDirection.rtl,
             child: Container(
-              margin: EdgeInsets.all(10.0),
-              child: GestureDetector(
-                  onTap: () async {
-                    //TODO Rate app
-                  },
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          // 'Rate our App',
-                          'قيم التطبيق',
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                        SizedBox(
-                          width: 4.0,
-                        ),
-                        RatingBarIndicator(
-                          rating: 5,
-                          direction: Axis.horizontal,
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Palette.yellow,
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  model.currentUser != null
+                      ? Text(
+                          // 'Logged in as',
+                          ' مسجل الدخول كـ ' + model.currentUser.username,
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(
+                            fontSize: 24,
+                            // color: theme == AppTheme.LIGHT
+                            //     ? Colors.white
+                            //     : Colors.black
                           ),
-                          itemCount: 5,
-                          itemSize: 16,
+                        )
+                      : Row(
+                          children: <Widget>[
+                            Text(
+                              'لم تقم بتسجيل الدخول بعد.',
+                              style: TextStyle(
+                                  // color: AppThemeModel.isLight()
+                                  //     ? Colors.white
+                                  //     : Colors.black,
+                                  ),
+                            ),
+                            SizedBox(
+                              width: 2.0,
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                margin: EdgeInsets.only(right: 3.0),
+                                child: Text(
+                                  'سجل الدخول الأن',
+                                  style: TextStyle(
+                                      color: Palette.midBlue,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.underline),
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(context, '/login');
+                              },
+                            ),
+                          ],
                         ),
-                      ])),
+                  // MyQarinliCard(
+                  //   // text: 'Notifications',
+                  //   text: 'الإشعارات',
+                  //   icon: Icons.alarm,
+                  //   onTap: () {
+                  //   },
+                  // ),
+                  // MyQarinliCard(
+                  //   // text: 'Price Alerts'
+                  //   text: 'تنبيهات الأسعار',
+                  //   icon: MdiIcons.clockAlertOutline,
+                  //   onTap: () {
+                  //   },
+                  // ),
+                  MyQarinliCard(
+                    // text: 'Settings',
+                    text: 'الإعدادات',
+                    icon: MdiIcons.cogs,
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return Settings();
+                      }));
+                    },
+                  ),
+                  // MyQarinliCard(
+                  //   // text: 'Feedback',
+                  //   text: 'أخبرنا رأيك',
+                  //   icon: MdiIcons.commentMultipleOutline,
+                  //   onTap: () {
+                  //   },
+                  // ),
+                ],
+              ),
             ),
           ),
+          //   ],
+          // ),
+          // Directionality(
+          //   textDirection: TextDirection.rtl,
+          //   child: Container(
+          //     margin: EdgeInsets.all(10.0),
+          //     child: GestureDetector(
+          //         onTap: () async {
+          //           //TODO Rate app
+          //         },
+          //         child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               Text(
+          //                 // 'Rate our App',
+          //                 'قيم التطبيق',
+          //                 style: TextStyle(fontSize: 18.0),
+          //               ),
+          //               SizedBox(
+          //                 width: 4.0,
+          //               ),
+          //               RatingBarIndicator(
+          //                 rating: 5,
+          //                 direction: Axis.horizontal,
+          //                 itemBuilder: (context, index) => Icon(
+          //                   Icons.star,
+          //                   color: Palette.yellow,
+          //                 ),
+          //                 itemCount: 5,
+          //                 itemSize: 16,
+          //               ),
+          //             ])),
+          //   ),
+          // ),
           Container(
             margin: EdgeInsets.all(10.0),
             child: GestureDetector(

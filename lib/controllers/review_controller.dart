@@ -101,10 +101,10 @@ class ReviewController {
       } else {
         print('Error');
         return responseBody['message'];
-        // return false;
       }
     } catch (e) {
       return null;
     }
+    return null;
   }
 }

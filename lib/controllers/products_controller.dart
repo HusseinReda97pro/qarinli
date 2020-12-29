@@ -1,344 +1,247 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:qarinli/config/api_authorization.dart';
-import 'package:qarinli/config/category_ids.dart';
+import 'package:qarinli/models/attribute_terms.dart';
+import 'package:qarinli/models/category.dart';
 import 'package:qarinli/models/fetchedProducts.dart';
+import 'package:qarinli/models/filter.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:http/http.dart' as http;
 import 'package:qarinli/models/shop.dart';
+import 'package:qarinli/models/tag.dart';
 import 'package:qarinli/models/youtube_video.dart';
 
 class ProductsController {
-  // Get Products with offers
   Future<FetchedProducts> getProducts(
-      {int page,
-      int categoryId,
-      bool withoutOffers = false,
-      choosen = false,
-      moda = false,
-      comparison = false,
-      search,
-      topSales = false,
-      favorites}) async {
+      {Filter filter, String favorites, int page, String relateds}) async {
+    http.Response response;
+    try {
+      String url =
+          'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164';
+      //Add tag
+      if (filter?.tags != null) {
+        if (filter.tags.isNotEmpty) {
+          String tags = '';
+          for (Tag tag in filter.tags) {
+            tags += tag.id.toString() + ',';
+          }
+          url += '&tag=$tags';
+        }
+      }
+      //Add Category
+      if (filter?.categories != null) {
+        if (filter.categories.isNotEmpty) {
+          String cats = '';
+          for (Category cat in filter.categories) {
+            cats += cat.id.toString() + ',';
+          }
+          url += '&category=$cats';
+        }
+      }
+      //Add featured
+      if (filter?.featured != null) {
+        url += '&featured=${filter.featured}';
+      }
+      //Search
+      if (filter?.search != null) {
+        url += '&search=${filter.search}';
+      }
+      //favorites
+      if (favorites != null) {
+        url += '&include=$favorites';
+      }
+      if (relateds != null) {
+        url += '&include=$relateds';
+      }
+      if (filter?.attribute != null && filter?.attributeTermas != null) {
+        String attributeTerms = '';
+        for (AttributeTermas term in filter.attributeTermas) {
+          if (term.isSelected) {
+            attributeTerms += term.id.toString() + ',';
+          }
+        }
+        url +=
+            '&attribute=${filter.attribute.slug}&attribute_term=$attributeTerms';
+      }
+      //Add page and status
+      if (favorites == null && relateds == null) {
+        url += '&status=publish&page=$page';
+        url += '&min_price=${filter.minPrice}&max_price=${filter.maxPrice + 1}';
+      }
+
+      print('URL: ' + url);
+
+      response = await http
+          .get(url, headers: <String, String>{'authorization': basicAuth});
+    } catch (e) {
+      print('get Products Error: ' + e.toString());
+      return FetchedProducts(products: [], totalPages: 0, totalResults: 0);
+    }
+    return extractProductData(response);
+  }
+
+  Future<FetchedProducts> extractProductData(response) async {
     List<Product> products = [];
     int totalPages = 0;
     int totalResults = 0;
+    var productsData;
+
     try {
-      var productsData;
-      try {
-        http.Response response;
-        http.Response response_2;
-        if (favorites != null) {
-          response = await http.get(
-              'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&include=$favorites',
-              headers: <String, String>{'authorization': basicAuth});
-        } else {
-          if (topSales) {
-            response = await http.get(
-                'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&tag=$COMPARISON_TAG_ID&min_price=200&max_price=400',
-                headers: <String, String>{'authorization': basicAuth});
-          } else {
-            if (search != null) {
-              response = await http.get(
-                  'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&search=$search&status=publish&post_type=product&page=$page',
-                  headers: <String, String>{'authorization': basicAuth});
-            } else {
-              if (comparison) {
-                response = await http.get(
-                    'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&tag=$COMPARISON_TAG_ID&page=$page',
-                    headers: <String, String>{'authorization': basicAuth});
-              } else {
-                if (choosen) {
-                  response = await http.get(
-                      'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&featured=true',
-                      headers: <String, String>{'authorization': basicAuth});
-                } else {
-                  if (moda) {
-                    response = await http.get(
-                        'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&category=$categoryId&featured=true&page=$page',
-                        headers: <String, String>{'authorization': basicAuth});
-                    response_2 = await http.get(
-                        'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&category=797&per_page=7',
-                        headers: <String, String>{'authorization': basicAuth});
-                  } else {
-                    response = await http.get(
-                        'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&page=$page&category=$categoryId',
-                        headers: <String, String>{'authorization': basicAuth});
-                  }
-                }
-              }
-            }
-          }
-        }
-        try {
-          totalResults = int.parse(response.headers['x-wp-total']);
-        } catch (e) {
-          print(e);
-        }
-        try {
-          totalPages = int.parse(response.headers['x-wp-totalpages']);
-        } catch (_) {}
+      totalResults = int.parse(response.headers['x-wp-total']);
+    } catch (_) {}
+    try {
+      totalPages = int.parse(response.headers['x-wp-totalpages']);
+    } catch (_) {}
 
-        var responseBody = await json.decode(response.body);
+    var responseBody = await json.decode(response.body);
 
-        // print(response.headers);
-        if (responseBody is List<dynamic> || responseBody['message'] == null) {
-          productsData = responseBody;
-          if (moda) {
-            var responseBody_2 = await json.decode(response_2.body);
-            productsData += responseBody_2;
-            // print(productsData);
-          }
-        } else {
-          // return responseBody['message'];
-          // print(page);
-          // print(categoryId);
-          print(
-              '________________________________________________   Error  form products api _______________________');
-          print(responseBody['message']);
-          return FetchedProducts(
-              products: [], totalPages: totalPages, totalResults: totalResults);
-        }
-      } on SocketException {
-        throw Exception('No Internet connection.');
+    try {
+      if (responseBody is List<dynamic> || responseBody['message'] == null) {
+        productsData = responseBody;
+        // if (moda) {
+        //   var responseBody_2 = await json.decode(response_2.body);
+        //   productsData += responseBody_2;
+        //   // print(productsData);
+        // }
+      } else {
+        return FetchedProducts(
+            products: [], totalPages: totalPages, totalResults: totalResults);
       }
-
-      for (var product in productsData) {
-        try {
-          var metaData = product['meta_data'];
-          String imageURL = getMainImage(
-              metaData: metaData,
-              images: product['images'],
-              withoutOffers: withoutOffers);
-          if (imageURL == null) {
-            imageURL = getMainImage(
-                metaData: metaData,
-                images: product['images'],
-                withoutOffers: true);
-          }
-
-          List<Shop> shops = getShopsOffers(metaData: metaData);
-          List<YoutubeVideo> youtubeVideos =
-              getYutubeVideos(metaData: metaData);
-          List<String> images = getGoogleImages(metaData: metaData);
-          String averageRating;
-          int ratingCount;
-          try {
-            averageRating = product['average_rating'];
-            ratingCount = product['rating_count'];
-          } catch (e) {
-            averageRating = '0';
-            ratingCount = 0;
-          }
-
-          // print(product['related_ids']);
-          List<dynamic> relatedIds = product['related_ids'];
-          // dynamic historOfPricesHTML =
-          //     await getHistorOfPricesHTML(product['permalink']);
-          String bestPriceURL = product['external_url'];
-          if (bestPriceURL.isEmpty && shops.length > 0) {
-            bestPriceURL = getCheapestPrice(shops).offerLink;
-          }
-          if (imageURL == null) {
-            imageURL = images[0];
-          }
-
-          // print(shops);
-          products.add(Product(
-              id: product['id'],
-              link: product['permalink'],
-              name: product['name'],
-              price: product['price'],
-              imageUrl: imageURL,
-              description: product['description'],
-              shortDescription: product['short_description'],
-              shops: shops,
-              youtubeVideos: youtubeVideos,
-              images: images,
-              reviewAverageRating: averageRating,
-              reviewRatingCount: ratingCount,
-              relatedIds: relatedIds,
-              bestPriceURL: bestPriceURL
-              // historOfPricesHTML: historOfPricesHTML
-              ));
-        } catch (e) {
-          print(
-              '____________________   Error inside single product  _______________________');
-          print(e.toString());
-        }
-      }
-    } catch (e) {
-      print(
-          '________________________________________________   Error  _______________________');
-      print(e.toString());
+    } catch (_) {
+      return FetchedProducts(
+          products: [], totalPages: totalPages, totalResults: totalResults);
     }
+
+    for (var product in productsData) {
+      try {
+        var metaData = product['meta_data'];
+        String imageURL =
+            getMainImage(metaData: metaData, images: product['images']);
+        if (imageURL == null) {
+          imageURL =
+              getMainImage(metaData: metaData, images: product['images']);
+        }
+
+        List<Shop> shops = getShopsOffers(metaData: metaData);
+        List<YoutubeVideo> youtubeVideos = getYutubeVideos(metaData: metaData);
+        List<String> images = getGoogleImages(metaData: metaData);
+        String averageRating;
+        int ratingCount;
+        try {
+          averageRating = product['average_rating'];
+          ratingCount = product['rating_count'];
+        } catch (e) {
+          averageRating = '0';
+          ratingCount = 0;
+        }
+
+        List<dynamic> relatedIds = product['related_ids'];
+        String bestPriceURL = product['external_url'];
+        if (bestPriceURL.isEmpty && shops.length > 0) {
+          bestPriceURL = getCheapestPrice(shops).offerLink;
+        }
+        if (imageURL == null) {
+          imageURL = images[0];
+        }
+
+        products.add(Product(
+            id: product['id'],
+            link: product['permalink'],
+            name: product['name'],
+            price: product['price'],
+            imageUrl: imageURL,
+            description: product['description'],
+            shortDescription: product['short_description'],
+            shops: shops,
+            youtubeVideos: youtubeVideos,
+            images: images,
+            reviewAverageRating: averageRating,
+            reviewRatingCount: ratingCount,
+            relatedIds: relatedIds,
+            bestPriceURL: bestPriceURL));
+      } catch (_) {}
+    }
+
     return FetchedProducts(
         products: products, totalPages: totalPages, totalResults: totalResults);
   }
 
-  Future<List<Product>> getRelatedProducts({relatedIds}) async {
-    List<Product> products = [];
-    try {
-      var productsData;
-      try {
-        http.Response response;
+  // // get single product
+  // Future<Product> getProduct(
+  //     {String productId, bool withoutOffers = false}) async {
+  //   Product product;
+  //   String url = 'https://www.qarinli.com/wp-json/wc/v3/products/$productId';
 
-        response = await http.get(
-            'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164&include=$relatedIds',
-            headers: <String, String>{'authorization': basicAuth});
+  //   try {
+  //     var productData;
+  //     try {
+  //       final http.Response response = await http
+  //           .get(url, headers: <String, String>{'authorization': basicAuth});
+  //       var responseBody = await json.decode(response.body);
+  //       if (responseBody is List<dynamic> || responseBody['message'] == null) {
+  //         productData = responseBody;
+  //       } else {
+  //         return responseBody['message'];
+  //       }
+  //     } on SocketException {
+  //       throw Exception('No Internet connection.');
+  //     }
 
-        var responseBody = await json.decode(response.body);
+  //     // print(productData);
 
-        if (responseBody is List<dynamic> || responseBody['message'] == null) {
-          productsData = responseBody;
-        } else {
-          return [];
-        }
-      } on SocketException {
-        throw Exception('No Internet connection.');
-      }
+  //     var metaData = productData['meta_data'];
+  //     String imageURL =
+  //         getMainImage(metaData: metaData, images: productData['images']);
+  //     if (imageURL == null) {
+  //       imageURL =
+  //           getMainImage(metaData: metaData, images: productData['images']);
+  //     }
+  //     List<Shop> shops = getShopsOffers(metaData: metaData);
+  //     List<YoutubeVideo> youtubeVideos = getYutubeVideos(metaData: metaData);
+  //     List<String> images = getGoogleImages(metaData: metaData);
+  //     String averageRating;
+  //     int ratingCount;
+  //     try {
+  //       averageRating = productData['average_rating'];
+  //       ratingCount = productData['rating_count'];
+  //     } catch (e) {
+  //       averageRating = '0';
+  //       ratingCount = 0;
+  //     }
+  //     List<dynamic> relatedIds = productData['related_ids'];
+  //     // dynamic historOfPricesHTML =
+  //     //     await getHistorOfPricesHTML(productData['permalink']);
+  //     String bestPriceURL = productData['external_url'];
+  //     if (bestPriceURL.isEmpty) {
+  //       bestPriceURL = getCheapestPrice(shops).offerLink;
+  //     }
+  //     product = Product(
+  //         id: productData['id'],
+  //         link: productData['permalink'],
+  //         name: productData['name'],
+  //         price: productData['price'],
+  //         imageUrl: imageURL,
+  //         description: productData['description'],
+  //         shortDescription: productData['short_description'],
+  //         shops: shops,
+  //         youtubeVideos: youtubeVideos,
+  //         images: images,
+  //         reviewAverageRating: averageRating,
+  //         reviewRatingCount: ratingCount,
+  //         relatedIds: relatedIds,
+  //         bestPriceURL: bestPriceURL
 
-      for (var product in productsData) {
-        try {
-          var metaData = product['meta_data'];
-          String imageURL =
-              getMainImage(metaData: metaData, images: product['images']);
-          if (imageURL == null) {
-            imageURL = getMainImage(
-                metaData: metaData,
-                images: product['images'],
-                withoutOffers: true);
-          }
+  //         // historOfPricesHTML: historOfPricesHTML
+  //         );
+  //   } catch (_) {}
 
-          List<Shop> shops = getShopsOffers(metaData: metaData);
-          List<YoutubeVideo> youtubeVideos =
-              getYutubeVideos(metaData: metaData);
-          List<String> images = getGoogleImages(metaData: metaData);
-          String averageRating;
-          int ratingCount;
-          try {
-            averageRating = product['average_rating'];
-            ratingCount = product['rating_count'];
-          } catch (e) {
-            averageRating = '0';
-            ratingCount = 0;
-          } // print(product['related_ids']);
-          List<dynamic> relatedIds = product['related_ids'];
-          // dynamic historOfPricesHTML =
-          //     await getHistorOfPricesHTML(product['permalink']);
-          String bestPriceURL = product['external_url'];
-          if (bestPriceURL.isEmpty && shops.length > 0) {
-            bestPriceURL = getCheapestPrice(shops).offerLink;
-          }
-          if (imageURL == null) {
-            imageURL = images[0];
-          }
-          // print(shops);
-          products.add(Product(
-              id: product['id'],
-              link: product['permalink'],
-              name: product['name'],
-              price: product['price'],
-              imageUrl: imageURL,
-              description: product['description'],
-              shortDescription: product['short_description'],
-              shops: shops,
-              youtubeVideos: youtubeVideos,
-              images: images,
-              reviewAverageRating: averageRating,
-              reviewRatingCount: ratingCount,
-              relatedIds: relatedIds,
-              bestPriceURL: bestPriceURL
-              // historOfPricesHTML: historOfPricesHTML
-              ));
-        } catch (e) {}
-      }
-    } catch (e) {}
-    return products;
-  }
-
-  // get single product
-  Future<Product> getProduct(
-      {String productId, bool withoutOffers = false}) async {
-    Product product;
-    String url = 'https://www.qarinli.com/wp-json/wc/v3/products/$productId';
-
-    try {
-      var productData;
-      try {
-        final http.Response response = await http
-            .get(url, headers: <String, String>{'authorization': basicAuth});
-        var responseBody = await json.decode(response.body);
-        if (responseBody is List<dynamic> || responseBody['message'] == null) {
-          productData = responseBody;
-        } else {
-          return responseBody['message'];
-        }
-      } on SocketException {
-        throw Exception('No Internet connection.');
-      }
-
-      // print(productData);
-
-      var metaData = productData['meta_data'];
-      String imageURL = getMainImage(
-          metaData: metaData,
-          images: productData['images'],
-          withoutOffers: withoutOffers);
-      if (imageURL == null) {
-        imageURL = getMainImage(
-            metaData: metaData,
-            images: productData['images'],
-            withoutOffers: true);
-      }
-      List<Shop> shops = getShopsOffers(metaData: metaData);
-      List<YoutubeVideo> youtubeVideos = getYutubeVideos(metaData: metaData);
-      List<String> images = getGoogleImages(metaData: metaData);
-      String averageRating;
-      int ratingCount;
-      try {
-        averageRating = productData['average_rating'];
-        ratingCount = productData['rating_count'];
-      } catch (e) {
-        averageRating = '0';
-        ratingCount = 0;
-      }
-      List<dynamic> relatedIds = productData['related_ids'];
-      // dynamic historOfPricesHTML =
-      //     await getHistorOfPricesHTML(productData['permalink']);
-      String bestPriceURL = productData['external_url'];
-      if (bestPriceURL.isEmpty) {
-        bestPriceURL = getCheapestPrice(shops).offerLink;
-      }
-      product = Product(
-          id: productData['id'],
-          link: productData['permalink'],
-          name: productData['name'],
-          price: productData['price'],
-          imageUrl: imageURL,
-          description: productData['description'],
-          shortDescription: productData['short_description'],
-          shops: shops,
-          youtubeVideos: youtubeVideos,
-          images: images,
-          reviewAverageRating: averageRating,
-          reviewRatingCount: ratingCount,
-          relatedIds: relatedIds,
-          bestPriceURL: bestPriceURL
-
-          // historOfPricesHTML: historOfPricesHTML
-          );
-    } catch (_) {}
-
-    return product;
-  }
+  //   return product;
+  // }
 
   // get main image URL
-  String getMainImage({images, metaData, bool withoutOffers = false}) {
+  String getMainImage({images, metaData}) {
     String imageURL;
     try {
-      if (withoutOffers) {
+      if (images.length > 0) {
         imageURL = images[0]['src'];
       } else {
         imageURL = metaData
@@ -348,6 +251,8 @@ class ProductsController {
             .toList()[0]['img'];
       }
     } catch (e) {
+      print('Error from image');
+      print(e);
       imageURL = null;
     }
     return imageURL;
@@ -387,11 +292,9 @@ class ProductsController {
               url: video['url'],
               title: video['title'],
               description: video['description']));
-        } catch (e) {}
+        } catch (_) {}
       }
-    } catch (e) {
-      // print('outter 1 : ' + e.toString());
-    }
+    } catch (_) {}
     return youtubeVideos;
   }
 
@@ -405,28 +308,11 @@ class ProductsController {
       for (var image in googleImagesData['value'].values.toList()) {
         try {
           images.add(image['img']);
-        } catch (e) {}
+        } catch (_) {}
       }
-    } catch (e) {
-      // print('outter  2 :' + e.toString());
-    }
+    } catch (_) {}
     return images;
   }
-
-  // Future<dynamic> getHistorOfPricesHTML(String productLink) async {
-  //   dynamic historOfPricesHTML;
-  //   try {
-  //     http.Response response = await http.get(productLink);
-  //     var html = parse(response.body)
-  //         .querySelector('#section-woo-ce-pricehistory')
-  //         .outerHtml;
-  //     historOfPricesHTML = HtmlEditor.merageTwoTDs(html);
-  //   } catch (e) {
-  //     print('scrap error');
-  //     print(e);
-  //   }
-  //   return historOfPricesHTML;
-  // }
 
   // get lowest product price
   Shop getCheapestPrice(List<Shop> shops) {
@@ -439,10 +325,7 @@ class ProductsController {
           cheapestPriceIndex = index;
         }
       }
-    } catch (e) {
-      print('get Cheapest Price Error:');
-      print(e);
-    }
+    } catch (_) {}
     return shops.length > 0 ? shops[cheapestPriceIndex] : null;
   }
 }

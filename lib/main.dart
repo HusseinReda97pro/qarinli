@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:qarinli/config/dark_theme.dart';
+import 'package:qarinli/config/filterr_category.dart';
 import 'package:qarinli/config/light_theme.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/views/auth/login_screen.dart';
@@ -30,10 +31,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     mainModel = MainModel();
     mainModel.autoLogin();
+    mainModel.getFilterCategories(categoriesIds: filterCategories);
+    mainModel.getFilterTags(tagIds: filterTags);
+
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences.getInstance().then((prefs) {
       String appTheme = prefs.getString('theme');
-      print(appTheme);
+      // print(appTheme);
 
       if (appTheme == null) {
         // print('null');

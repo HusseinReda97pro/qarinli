@@ -5,6 +5,7 @@ import 'package:qarinli/config/Palette.dart';
 import 'package:qarinli/config/theme.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/models/category.dart';
+import 'package:qarinli/models/filter.dart';
 import 'package:qarinli/views/sub_category_screen/sub_category_screen.dart';
 
 class SubCategoryCard extends StatelessWidget {
@@ -18,9 +19,7 @@ class SubCategoryCard extends StatelessWidget {
         onTap: () {
           model.currentCategory = category;
           model.getCurrentProducts(
-            pageNumber: 1,
-            categoryId: category.id,
-          );
+              pageNumber: 1, filter: Filter(tags: [], categories: [category]));
           model.getSubCategories();
           if (isSubcategoryScreen) {
             Navigator.pushReplacement(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qarinli/models/category.dart';
+import 'package:qarinli/models/filter.dart';
 // import 'package:qarinli/models/product.dart';
 import 'package:qarinli/views/ProductsScreen/products_screen.dart';
 
@@ -13,16 +14,17 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        MyApp.mainModel
-            .getCurrentProducts(pageNumber: 1, categoryId: category.id);
+        MyApp.mainModel.getCurrentProducts(
+            pageNumber: 1, filter: Filter(categories: [category], tags: []));
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) {
-          return ProductsScreen(
-            categoryId: category.id,
-            withoutOffers: false,
-          );
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ProductsScreen();
+            },
+          ),
+        );
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 6.0),
