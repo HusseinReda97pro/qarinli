@@ -31,7 +31,7 @@ class BlogCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 15.0),
         child: Card(
-          color: AppThemeModel.isLight() ? Colors.white : Colors.transparent,
+          color: AppThemeModel.isLight ? Colors.white : Colors.transparent,
           elevation: 2.0,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

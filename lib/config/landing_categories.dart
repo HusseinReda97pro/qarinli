@@ -12,3 +12,4 @@ final modaCat = Category(id: 797, name: 'ملابس أحذية و اكسسوار
 final comparisonTag = Tag(id: 1278, name: 'مقارنة');
 
 const SUPERMARKET_CAT_ID = 1325;
+const QARINLI_TAG_ID = 2164;

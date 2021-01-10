@@ -13,7 +13,7 @@ class TagFilterCard extends StatelessWidget {
     return Consumer<MainModel>(builder: (context, model, chlild) {
       return Card(
         margin: EdgeInsets.all(4.0),
-        color: AppThemeModel.isLight() ? Palette.midBlue : Colors.white,
+        color: AppThemeModel.isLight? Palette.midBlue : Colors.white,
         child: Container(
           margin: EdgeInsets.all(4.0),
           child: Row(
@@ -22,7 +22,7 @@ class TagFilterCard extends StatelessWidget {
                 tag.name,
                 style: TextStyle(
                   color:
-                      AppThemeModel.isLight() ? Colors.white : Palette.midBlue,
+                      AppThemeModel.isLight ? Colors.white : Palette.midBlue,
                 ),
               ),
               GestureDetector(
@@ -33,7 +33,7 @@ class TagFilterCard extends StatelessWidget {
                   Icons.close,
                   size: 16.0,
                   color:
-                      AppThemeModel.isLight() ? Colors.white : Palette.midBlue,
+                      AppThemeModel.isLight ? Colors.white : Palette.midBlue,
                 ),
               ),
             ],

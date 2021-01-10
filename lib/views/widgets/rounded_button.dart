@@ -20,7 +20,7 @@ class RoundedButton extends StatelessWidget {
         child: Text(
           title,
           style: TextStyle(
-              color: AppThemeModel.isLight() ? Colors.white : Palette.midBlue,
+              color: AppThemeModel.isLight ? Colors.white : Palette.midBlue,
               fontSize: 10.0),
         ),
         onPressed: onPressed,
@@ -29,7 +29,7 @@ class RoundedButton extends StatelessWidget {
           side: BorderSide(
               color: isSelceted ? Palette.yellow : Colors.transparent),
         ),
-        color: AppThemeModel.isLight() ? Palette.midBlue : Colors.white,
+        color: AppThemeModel.isLight ? Palette.midBlue : Colors.white,
         elevation: 0.0,
       ),
     );

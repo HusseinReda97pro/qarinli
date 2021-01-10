@@ -59,7 +59,7 @@ mixin ProductModel on ChangeNotifier {
   bool currentAttributeTermasIsLoading = false;
 
   Future<void> getCurrentMaxPrice(
-      {List<Category> categories, List<Tag> tags}) async {
+      {@required List<Category> categories, @required List<Tag> tags}) async {
     int price =
         await filterController.getMaxPrice(cateories: categories, tags: tags);
     currentFilter.maxPrice = price;
@@ -177,7 +177,7 @@ mixin ProductModel on ChangeNotifier {
     modaLanddingIsLoading = true;
     notifyListeners();
     modaLanddingProducts.clear();
-    Filter filter = Filter(categories: [modaCat], tags: []);
+    Filter filter = Filter(categories: [modaCat], tags: [], featured: true);
     // Filter filter = Filter(categoryId: MODA_CAT_ID, featured: true);
     //TODO edit moda
     productsController

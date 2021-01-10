@@ -56,7 +56,7 @@ class SubCategoryCard extends StatelessWidget {
                   category.name,
                   style: TextStyle(
                     color:
-                        AppThemeModel.isLight() ? Colors.black : Palette.yellow,
+                        AppThemeModel.isLight? Colors.black : Palette.yellow,
                   ),
                 ),
               ),

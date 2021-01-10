@@ -35,7 +35,7 @@ class UnLogedinUser extends StatelessWidget {
                     'برجاء تسجيل الدخول أولاً لكي تتمكن من إضافة منتجات مفضلة',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: AppThemeModel.isLight()
+                        color: AppThemeModel.isLight
                             ? Palette.black
                             : Colors.white,
                         fontSize: 18,
@@ -49,16 +49,15 @@ class UnLogedinUser extends StatelessWidget {
                   margin: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * 0.25),
                   child: RaisedButton(
-                    color: AppThemeModel.isLight()
-                        ? Colors.white
-                        : Palette.midBlue,
+                    color:
+                        AppThemeModel.isLight ? Colors.white : Palette.midBlue,
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
                         side: BorderSide(color: Palette.black)),
                     child: Text(
                       'تسجيل الدخول',
                       style: TextStyle(
-                          color: AppThemeModel.isLight()
+                          color: AppThemeModel.isLight
                               ? Palette.midBlue
                               : Colors.white,
                           fontSize: 18,
@@ -95,9 +94,8 @@ class UnLogedinUser extends StatelessWidget {
                   'برجاء تسجيل الدخول أولاً لكي تتمكن من إضافة منتجات مفضلة',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: AppThemeModel.isLight()
-                          ? Palette.black
-                          : Colors.white,
+                      color:
+                          AppThemeModel.isLight ? Palette.black : Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w700),
                 ),
@@ -109,15 +107,14 @@ class UnLogedinUser extends StatelessWidget {
                 margin: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width * 0.25),
                 child: RaisedButton(
-                  color:
-                      AppThemeModel.isLight() ? Colors.white : Palette.midBlue,
+                  color: AppThemeModel.isLight ? Colors.white : Palette.midBlue,
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(18.0),
                       side: BorderSide(color: Palette.black)),
                   child: Text(
                     'تسجيل الدخول',
                     style: TextStyle(
-                        color: AppThemeModel.isLight()
+                        color: AppThemeModel.isLight
                             ? Palette.midBlue
                             : Colors.white,
                         fontSize: 18,

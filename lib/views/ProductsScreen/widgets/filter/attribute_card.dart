@@ -16,13 +16,13 @@ class AtributeCard extends StatelessWidget {
         side: BorderSide(
             color: isSelected ? Palette.yellow : Palette.midBlue, width: 2),
       ),
-      color: AppThemeModel.isLight() ? Palette.midBlue : Colors.white,
+      color: AppThemeModel.isLight ? Palette.midBlue : Colors.white,
       child: Container(
         margin: EdgeInsets.all(4.0),
         child: Text(
           attribute.nama,
           style: TextStyle(
-              color: AppThemeModel.isLight() ? Colors.white : Palette.midBlue,
+              color: AppThemeModel.isLight ? Colors.white : Palette.midBlue,
               fontSize: 18.0),
         ),
       ),

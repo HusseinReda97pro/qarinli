@@ -41,7 +41,7 @@ class _AddReviewState extends State<AddReview> {
                 minRating: 0,
                 direction: Axis.horizontal,
                 unratedColor:
-                    AppThemeModel.isLight() ? Colors.black : Colors.white,
+                    AppThemeModel.isLight ? Colors.black : Colors.white,
                 itemCount: 5,
                 itemSize: 24.0,
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
@@ -156,7 +156,7 @@ class _AddReviewState extends State<AddReview> {
                           }
                         : null,
                     icon: Icon(MdiIcons.send,
-                        color: AppThemeModel.isLight()
+                        color: AppThemeModel.isLight
                             ? Palette.midBlue
                             : Colors.white)),
               ],

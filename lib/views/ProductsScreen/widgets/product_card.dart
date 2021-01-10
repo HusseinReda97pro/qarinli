@@ -109,7 +109,7 @@ class ProductCard extends StatelessWidget {
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             fontSize: 16,
-                            color: AppThemeModel.isLight()
+                            color: AppThemeModel.isLight
                                 ? Colors.black
                                 : Palette.yellow,
                             fontWeight: FontWeight.w500,

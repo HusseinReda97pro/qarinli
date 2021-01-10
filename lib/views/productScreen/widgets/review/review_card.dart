@@ -20,9 +20,8 @@ class ReviewCard extends StatelessWidget {
               children: [
                 review.reviewer != null && review.reviewer.length > 0
                     ? CircleAvatar(
-                        backgroundColor: AppThemeModel.isLight()
-                            ? Colors.black
-                            : Colors.white,
+                        backgroundColor:
+                            AppThemeModel.isLight ? Colors.black : Colors.white,
                         child: Text(review.reviewer[0].toUpperCase()),
                       )
                     : SizedBox.shrink(),
@@ -33,9 +32,8 @@ class ReviewCard extends StatelessWidget {
                       RatingBarIndicator(
                         rating: review.rating.toDouble(),
                         direction: Axis.horizontal,
-                        unratedColor: AppThemeModel.isLight()
-                            ? Colors.black
-                            : Colors.white,
+                        unratedColor:
+                            AppThemeModel.isLight ? Colors.black : Colors.white,
                         itemBuilder: (context, index) => Icon(
                           Icons.star,
                           color: Colors.amber,

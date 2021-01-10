@@ -56,7 +56,7 @@ class ReviewsCard extends StatelessWidget {
                 'قيم المنتج',
                 style: TextStyle(
                     color:
-                        AppThemeModel.isLight() ? Colors.black : Palette.yellow,
+                        AppThemeModel.isLight ? Colors.black : Palette.yellow,
                     fontSize: 16.0),
               ),
             ),

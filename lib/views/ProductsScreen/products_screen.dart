@@ -49,7 +49,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               width: 120,
                               margin: EdgeInsets.symmetric(horizontal: 10.0),
                               child: RaisedButton(
-                                color: AppThemeModel.isLight()
+                                color: AppThemeModel.isLight
                                     ? Palette.midBlue
                                     : Colors.white,
                                 onPressed: () {
@@ -58,7 +58,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 child: Text(
                                   'تصفية المنتجات',
                                   style: TextStyle(
-                                      color: AppThemeModel.isLight()
+                                      color: AppThemeModel.isLight
                                           ? Colors.white
                                           : Palette.midBlue),
                                 ),
@@ -76,7 +76,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               model.currentTotalResults.toString() + ' نتيجة',
                               style: TextStyle(
                                   fontSize: 16.0,
-                                  color: AppThemeModel.isLight()
+                                  color: AppThemeModel.isLight
                                       ? Palette.black
                                       : Palette.yellow),
                             ),

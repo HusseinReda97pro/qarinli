@@ -6,6 +6,7 @@ import 'package:qarinli/models/fetchedProducts.dart';
 import 'package:qarinli/models/filter.dart';
 import 'package:qarinli/models/product.dart';
 import 'package:http/http.dart' as http;
+import 'package:qarinli/models/product_attribute.dart';
 import 'package:qarinli/models/shop.dart';
 import 'package:qarinli/models/tag.dart';
 import 'package:qarinli/models/youtube_video.dart';
@@ -15,8 +16,8 @@ class ProductsController {
       {Filter filter, String favorites, int page, String relateds}) async {
     http.Response response;
     try {
-      String url =
-          'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164';
+      String url = 'https://www.qarinli.com/wp-json/wc/v3/products?';
+      // 'https://www.qarinli.com/wp-json/wc/v3/products?tag_exclude=2164';
       //Add tag
       if (filter?.tags != null) {
         if (filter.tags.isNotEmpty) {
@@ -123,7 +124,19 @@ class ProductsController {
 
         List<Shop> shops = getShopsOffers(metaData: metaData);
         List<YoutubeVideo> youtubeVideos = getYutubeVideos(metaData: metaData);
-        List<String> images = getGoogleImages(metaData: metaData);
+        List<String> images = [];
+        if (product['images'].length > 0) {
+          for (var image in product['images']) {
+            try {
+              images.add(image['src']);
+            } catch (e) {
+              print('**************************');
+              print(e);
+            }
+          }
+        } else {
+          images = getGoogleImages(metaData: metaData);
+        }
         String averageRating;
         int ratingCount;
         try {
@@ -143,21 +156,52 @@ class ProductsController {
           imageURL = images[0];
         }
 
+        // tags
+        List<Tag> tags = [];
+        try {
+          for (var tag in product['tags']) {
+            tags.add(Tag(id: tag['id'], name: tag['name'], count: 0));
+          }
+        } catch (_) {}
+        // attributes
+        List<ProductAttribute> attributes = [];
+        try {
+          for (var attribute in product['attributes']) {
+            try {
+              ProductAttribute productAttribute = ProductAttribute(
+                id: attribute['id'],
+                name: attribute['name'],
+                position: attribute['position'],
+                isVisible: attribute['visible'],
+                isVariation: attribute['variation'],
+                options: attribute['options'].cast<String>().toList(),
+              );
+              if (productAttribute.isVisible) {
+                attributes.add(productAttribute);
+              }
+            } catch (e) {
+              print(e);
+            }
+          }
+        } catch (_) {}
         products.add(Product(
-            id: product['id'],
-            link: product['permalink'],
-            name: product['name'],
-            price: product['price'],
-            imageUrl: imageURL,
-            description: product['description'],
-            shortDescription: product['short_description'],
-            shops: shops,
-            youtubeVideos: youtubeVideos,
-            images: images,
-            reviewAverageRating: averageRating,
-            reviewRatingCount: ratingCount,
-            relatedIds: relatedIds,
-            bestPriceURL: bestPriceURL));
+          id: product['id'],
+          link: product['permalink'],
+          name: product['name'],
+          price: product['price'],
+          imageUrl: imageURL,
+          description: product['description'],
+          shortDescription: product['short_description'],
+          shops: shops,
+          youtubeVideos: youtubeVideos,
+          images: images,
+          reviewAverageRating: averageRating,
+          reviewRatingCount: ratingCount,
+          relatedIds: relatedIds,
+          bestPriceURL: bestPriceURL,
+          tags: tags,
+          attributes: attributes,
+        ));
       } catch (_) {}
     }
 

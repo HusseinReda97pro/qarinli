@@ -127,7 +127,7 @@ class _ProductsTabState extends State<ProductsTab> {
                                 textDirection: TextDirection.rtl,
                                 style: TextStyle(
                                     fontSize: 16.0,
-                                    color: AppThemeModel.isLight()
+                                    color: AppThemeModel.isLight
                                         ? Palette.black
                                         : Palette.yellow),
                               ),

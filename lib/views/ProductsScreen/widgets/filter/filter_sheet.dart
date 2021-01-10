@@ -47,10 +47,9 @@ class _FilterSheetState extends State<FilterSheet> {
           hint: Text('أختار التصنيف'),
           icon: Icon(
             Icons.list,
-            color: AppThemeModel.isLight() ? Palette.midBlue : Palette.yellow,
+            color: AppThemeModel.isLight ? Palette.midBlue : Palette.yellow,
           ),
-          dropdownColor:
-              AppThemeModel.isLight() ? Palette.midBlue : Colors.white,
+          dropdownColor: AppThemeModel.isLight ? Palette.midBlue : Colors.white,
           items: model.filterCategories.map((Category category) {
             return DropdownMenuItem<String>(
               value: category.id.toString(),
@@ -61,7 +60,7 @@ class _FilterSheetState extends State<FilterSheet> {
                     category.name + ' (' + category.count.toString() + ')',
                     textAlign: TextAlign.right,
                     style: TextStyle(
-                      color: AppThemeModel.isLight()
+                      color: AppThemeModel.isLight
                           ? Colors.white
                           : Palette.midBlue,
                     ),
@@ -98,10 +97,9 @@ class _FilterSheetState extends State<FilterSheet> {
           hint: Text('أختار النوع'),
           icon: Icon(
             Icons.list,
-            color: AppThemeModel.isLight() ? Palette.midBlue : Palette.yellow,
+            color: AppThemeModel.isLight ? Palette.midBlue : Palette.yellow,
           ),
-          dropdownColor:
-              AppThemeModel.isLight() ? Palette.midBlue : Colors.white,
+          dropdownColor: AppThemeModel.isLight ? Palette.midBlue : Colors.white,
           items: model.filterTags.map((Tag tag) {
             return DropdownMenuItem<String>(
               value: tag.id.toString(),
@@ -112,7 +110,7 @@ class _FilterSheetState extends State<FilterSheet> {
                     tag.name + ' (' + tag.count.toString() + ')',
                     textAlign: TextAlign.right,
                     style: TextStyle(
-                      color: AppThemeModel.isLight()
+                      color: AppThemeModel.isLight
                           ? Colors.white
                           : Palette.midBlue,
                     ),
@@ -148,14 +146,13 @@ class _FilterSheetState extends State<FilterSheet> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              color: AppThemeModel.isLight() ? Palette.midBlue : Colors.white,
+              color: AppThemeModel.isLight ? Palette.midBlue : Colors.white,
               child: Text(
                 'تصفية المنتجات',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: AppThemeModel.isLight()
-                        ? Colors.white
-                        : Palette.midBlue,
+                    color:
+                        AppThemeModel.isLight ? Colors.white : Palette.midBlue,
                     fontSize: 24.0),
               ),
             ),
@@ -180,7 +177,7 @@ class _FilterSheetState extends State<FilterSheet> {
                     min: 0.0,
                     max: model.maxPriceSliderLimt.toDouble(),
                     divisions: 100,
-                    activeColor: AppThemeModel.isLight()
+                    activeColor: AppThemeModel.isLight
                         ? Palette.midBlue
                         : Palette.yellow,
                     onChanged: (RangeValues newvalues) {
@@ -279,9 +276,8 @@ class _FilterSheetState extends State<FilterSheet> {
                     height: 15.0,
                   ),
                   RaisedButton(
-                    color: AppThemeModel.isLight()
-                        ? Palette.midBlue
-                        : Colors.white,
+                    color:
+                        AppThemeModel.isLight ? Palette.midBlue : Colors.white,
                     onPressed: () async {
                       model.currentFilter = model.filterToApply;
                       model.getCurrentProducts(
@@ -291,7 +287,7 @@ class _FilterSheetState extends State<FilterSheet> {
                     child: Text(
                       'تصفية',
                       style: TextStyle(
-                          color: AppThemeModel.isLight()
+                          color: AppThemeModel.isLight
                               ? Colors.white
                               : Palette.midBlue,
                           fontSize: 24.0),

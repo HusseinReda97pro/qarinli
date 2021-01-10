@@ -15,7 +15,7 @@ class RatingCard extends StatelessWidget {
         RatingBarIndicator(
           rating: double.parse(product.reviewAverageRating),
           direction: Axis.horizontal,
-          unratedColor: AppThemeModel.isLight() ? Colors.black : Colors.white,
+          unratedColor: AppThemeModel.isLight ? Colors.black : Colors.white,
           itemBuilder: (context, index) => Icon(
             Icons.star,
             color: Colors.amber,
@@ -28,7 +28,7 @@ class RatingCard extends StatelessWidget {
           child: Text(
             '(' + product.reviewRatingCount.toString() + ')',
             style: TextStyle(
-                color: AppThemeModel.isLight() ? Palette.black : Colors.white,
+                color: AppThemeModel.isLight ? Palette.black : Colors.white,
                 fontSize: 16),
           ),
         ),

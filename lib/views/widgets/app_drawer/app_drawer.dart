@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qarinli/config/landing_categories.dart';
 import 'package:qarinli/controllers/state_management/main_model.dart';
 import 'package:qarinli/views/Favorites/favorites_scerren.dart';
 import 'package:qarinli/views/auth/login_screen.dart';
 import 'package:qarinli/views/blogs_screen/blogs_screen.dart';
+import 'package:qarinli/views/cart/cart_screen.dart';
 import 'package:qarinli/views/info/privacy.dart';
 import 'package:qarinli/views/info/rules.dart';
 import 'package:qarinli/views/landing_screen/landing_screen.dart';
@@ -108,6 +110,24 @@ class AppDrawer extends StatelessWidget {
                         //     return LanddingScreen();
                         //   }),
                         // );
+                      },
+                    ),
+              model.currentUser == null
+                  ? SizedBox.shrink()
+                  : DrawerTab(
+                      title: 'سلة التسوق',
+                      icon: MdiIcons.cart,
+                      onTap: () {
+                        if (model.currentUser != null) {
+                          model.getCurrentCart(
+                              userToken: model.currentUser.token);
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                            return CartScreen();
+                          }),
+                        );
                       },
                     ),
               DrawerTab(

@@ -174,7 +174,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                                       style: {
                                         'a': Style(
                                             textDecoration: TextDecoration.none,
-                                            color: AppThemeModel.isLight()
+                                            color: AppThemeModel.isLight
                                                 ? Colors.black
                                                 : Colors.white)
                                       },

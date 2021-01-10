@@ -13,7 +13,7 @@ class CategoryFilterCard extends StatelessWidget {
     return Consumer<MainModel>(builder: (context, model, chlild) {
       return Card(
         margin: EdgeInsets.all(4.0),
-        color: AppThemeModel.isLight() ? Palette.midBlue : Colors.white,
+        color: AppThemeModel.isLight ? Palette.midBlue : Colors.white,
         child: Container(
           margin: EdgeInsets.all(4.0),
           child: Row(
@@ -21,8 +21,7 @@ class CategoryFilterCard extends StatelessWidget {
               Text(
                 category.name,
                 style: TextStyle(
-                  color:
-                      AppThemeModel.isLight() ? Colors.white : Palette.midBlue,
+                  color: AppThemeModel.isLight ? Colors.white : Palette.midBlue,
                 ),
               ),
               GestureDetector(
@@ -32,8 +31,7 @@ class CategoryFilterCard extends StatelessWidget {
                 child: Icon(
                   Icons.close,
                   size: 16.0,
-                  color:
-                      AppThemeModel.isLight() ? Colors.white : Palette.midBlue,
+                  color: AppThemeModel.isLight ? Colors.white : Palette.midBlue,
                 ),
               ),
             ],

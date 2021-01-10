@@ -185,7 +185,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                                 ' نتيجة',
                                             style: TextStyle(
                                                 fontSize: 16.0,
-                                                color: AppThemeModel.isLight()
+                                                color: AppThemeModel.isLight
                                                     ? Palette.black
                                                     : Palette.yellow),
                                           ),

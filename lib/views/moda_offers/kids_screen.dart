@@ -87,7 +87,7 @@ class _KidsScrrenState extends State<KidsScrren> {
                                   textDirection: TextDirection.rtl,
                                   style: TextStyle(
                                       fontSize: 16.0,
-                                      color: AppThemeModel.isLight()
+                                      color: AppThemeModel.isLight
                                           ? Palette.black
                                           : Palette.yellow),
                                 ),

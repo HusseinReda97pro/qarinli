@@ -59,21 +59,20 @@ class _HomeTabState extends State<HomeTab> {
               child: Icon(
                 Icons.search,
                 size: 24,
-                color: AppThemeModel.isLight() ? Colors.black : Palette.yellow,
+                color: AppThemeModel.isLight ? Colors.black : Palette.yellow,
               ),
             ),
             hintText: 'بحث',
             hintStyle: TextStyle(
               fontWeight: FontWeight.w600,
-              color: AppThemeModel.isLight() ? Colors.black : Colors.white,
+              color: AppThemeModel.isLight ? Colors.black : Colors.white,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
               borderSide: BorderSide(
                 style: BorderStyle.solid,
-                color: AppThemeModel.isLight()
-                    ? Palette.midBlue
-                    : Palette.lightGrey,
+                color:
+                    AppThemeModel.isLight ? Palette.midBlue : Palette.lightGrey,
                 width: 2.0,
               ),
             ),
@@ -81,9 +80,8 @@ class _HomeTabState extends State<HomeTab> {
               borderRadius: BorderRadius.circular(50),
               borderSide: BorderSide(
                 style: BorderStyle.solid,
-                color: AppThemeModel.isLight()
-                    ? Palette.midBlue
-                    : Palette.lightGrey,
+                color:
+                    AppThemeModel.isLight ? Palette.midBlue : Palette.lightGrey,
                 width: 2.0,
               ),
             ),
@@ -131,7 +129,7 @@ class _HomeTabState extends State<HomeTab> {
       SectionHeader(
         title: 'مقارنة',
         onTap: () {
-          model.getCurrentMaxPrice(tags: [comparisonTag]);
+          model.getCurrentMaxPrice(tags: [comparisonTag], categories: []);
           model.getFilterCategories(categoriesIds: filterCategories);
           model.getFilterTags(tagIds: filterTags);
           model.getCurrentProducts(
@@ -204,7 +202,7 @@ class _HomeTabState extends State<HomeTab> {
       SectionHeader(
         title: 'كمبيوتر ولابتوب',
         onTap: () async {
-          model.getCurrentMaxPrice(categories: [laptopsCat]);
+          model.getCurrentMaxPrice(categories: [laptopsCat], tags: []);
           model.getFilterCategories(categoriesIds: filterCategories);
           model.getFilterTags(tagIds: filterTags);
 
@@ -236,7 +234,7 @@ class _HomeTabState extends State<HomeTab> {
       SectionHeader(
         title: 'عطور',
         onTap: () async {
-          model.getCurrentMaxPrice(categories: [atorCat]);
+          model.getCurrentMaxPrice(categories: [atorCat], tags: []);
           model.getFilterCategories(categoriesIds: filterCategories);
           model.getFilterTags(tagIds: filterTags);
 
@@ -269,7 +267,7 @@ class _HomeTabState extends State<HomeTab> {
       SectionHeader(
         title: 'موبايلات وأجهزة تابلت واكسسواراتها',
         onTap: () async {
-          model.getCurrentMaxPrice(categories: [mobsCat]);
+          model.getCurrentMaxPrice(categories: [mobsCat], tags: []);
           model.getFilterCategories(categoriesIds: filterCategories);
           model.getFilterTags(tagIds: filterTags);
 
@@ -297,7 +295,7 @@ class _HomeTabState extends State<HomeTab> {
       SectionHeader(
         title: 'الأجهزة المنزلية',
         onTap: () async {
-          model.getCurrentMaxPrice(categories: [homeEquipmentsCat]);
+          model.getCurrentMaxPrice(categories: [homeEquipmentsCat], tags: []);
           model.getFilterCategories(categoriesIds: filterCategories);
           model.getFilterTags(tagIds: filterTags);
           model.getCurrentProducts(
